@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import nctsign from "../images/NCTsign.jpeg";
+import React, { Component } from 'react';
+import nctsign from '../images/NCTsign.jpeg';
 
 const imageStyle = {
-  width: "100vw",
-  height: "auto"
+  objectFit: 'contain',
+  // width: 'auto',
+  // height: '100vh',
 };
 
 export default class Home extends Component {
@@ -11,10 +12,10 @@ export default class Home extends Component {
     return (
       <div>
         <img
-          className="img-fluid"
+          className='img-fluid'
           src={nctsign}
           style={imageStyle}
-          alt="NCT trail map"
+          alt='NCT trail map'
         />
       </div>
     );
