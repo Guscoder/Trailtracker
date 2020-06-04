@@ -1,0 +1,15 @@
+@import '../styles/config-styles.scss';
+
+.home-screen {
+  width: 100vh;
+  height: 85vh;
+  img {
+    width: 100vw;
+    height: 85vh;
+    object-fit: cover;
+    object-position: 150% 0;
+    @media screen and (max-width: 700px) {
+      object-position: 0;
+    }
+  }
+}

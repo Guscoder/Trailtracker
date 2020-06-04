@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
-import nctsign from '../images/NCTsign.jpeg';
-
-const imageStyle = {
-  objectFit: 'contain',
-  // width: 'auto',
-  // height: '100vh',
-};
+import Header from './Header';
+import './home.scss';
 
 export default class Home extends Component {
   render() {
     return (
-      <div>
+      <main className='home-screen'>
         <img
-          className='img-fluid'
-          src={nctsign}
-          style={imageStyle}
-          alt='NCT trail map'
+          className=''
+          src={require('../assets/images/NCTsign.jpeg')}
+          alt='north country trail sign'
         />
-      </div>
+      </main>
     );
   }
 }

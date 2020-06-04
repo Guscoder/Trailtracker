@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../../actions';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -9,8 +9,10 @@ class EditButton extends React.Component {
   editItem = () => {
     console.log('edit button working');
     console.log(this.props.trailId);
-
+    console.log(this.props.itemStatus);
     this.props.viewTrailItemId(this.props.trailId);
+
+    this.props.updateTrailItem(this.props.itemStatus);
     this.props.history.push(`/EditableTrailItem`);
   };
 
@@ -31,6 +33,7 @@ class EditButton extends React.Component {
 const mapStateToProps = (state) => {
   return {
     trailItems: state.trailData.trailItems,
+    trailItemId: state.trailItemId.trailItemId,
   };
 };
 

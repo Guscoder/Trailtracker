@@ -1,0 +1,21 @@
+@import '../../styles/config-styles.scss';
+
+* {
+  font-family: 'Sanchez', sans-serif;
+}
+
+.inputform-container {
+  padding-top: $header-height;
+}
+.input-card {
+  background-color: $lightblue !important;
+  h1 {
+    font-size: 5vw;
+    font-weight: bold;
+  }
+}
+
+button[type='submit'] {
+  background-color: $darktan;
+  border: $lighttan solid 2px;
+}

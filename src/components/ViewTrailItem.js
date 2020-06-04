@@ -2,6 +2,7 @@ import React from 'react';
 import TrailworkItem from './TrailItems/TrailworkItem';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import './viewtrailitem.scss';
 
 class ViewTrailItem extends React.Component {
   componentDidMount(props) {
@@ -23,9 +24,11 @@ class ViewTrailItem extends React.Component {
 
   render() {
     return (
-      <div className='container center'>
-        <div>{this.renderTrailItem()}</div>
-      </div>
+      <article className='container trailitem-view'>
+        <div className='row justify-content-center'>
+          {this.renderTrailItem()}
+        </div>
+      </article>
     ); //
   }
 }

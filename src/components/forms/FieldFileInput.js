@@ -29,7 +29,7 @@ class FieldFileInput extends Component {
     return (
       <div>
         <div className='form-group row'>
-          <label className='col-sm-5 col-form-label text-sm-right'>
+          <label className='col-sm-4 col-form-label text-sm-right'>
             {label}
           </label>
           <div className='col-sm-7'>

@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'Sanchez';
+  src: (url('../assets/fonts/Sanchez/Sanchez-Regular.ttf'));
+}
+
+$primary-font: 'Sanchez';
+
+$darkblue: #2c6281;
+$lightblue: #5ba8d9;
+$darktan: #c5a34e;
+$lighttan: #f7f0de;
+
+$general-bg: #fefefe;
+$header-bg: #444444;
+
+$header-height: 15vh;
+
+* {
+  font-family: 'Sanchez', sans-serif;
+}
+
+:root {
+  background-color: $lighttan;
+  font-family: $primary-font, sans-serif;
+}
+body {
+  background-color: $lighttan;
+}
+
+.content {
+  background-color: $lighttan;
+  overflow: hidden;
+  min-height: 85vh;
+}

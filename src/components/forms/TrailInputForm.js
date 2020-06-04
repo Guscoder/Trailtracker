@@ -1,36 +1,37 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { addTrailItem } from '../actions';
+import { addTrailItem } from '../../actions';
 import FieldFileInput from './FieldFileInput';
+import './trailinputform.scss';
 
 class TrailInputForm extends React.Component {
-  renderInput({ input, type, label, name, placeholder }) {
+  renderInput({ input, type, label, name, placeholder, hideMe }) {
     return (
       <div className='form-group row'>
-        <label htmlFor={name} className='col-sm-5 col-form-label text-sm-right'>
+        <label htmlFor={name} className='col-sm-4 col-form-label text-sm-right'>
           {label}
         </label>
         <div className='col-sm-7'>
           <input
             {...input}
             type={type}
-            className='form-control'
+            className={`form-control ${hideMe}`}
             id={name}
             placeholder={placeholder}
+            // defaultValue
           ></input>
         </div>
       </div>
     );
   }
-
   renderSelectField = (field) => {
     // console.log(field.input.value);
     return (
       <div className='form-group row'>
         <label
           htmlFor='local_chapter'
-          className='col-sm-5 col-form-label text-sm-right'
+          className='col-sm-4 col-form-label text-sm-right'
         >
           {field.label}
         </label>
@@ -58,9 +59,14 @@ class TrailInputForm extends React.Component {
 
   render() {
     return (
-      <main className='w-100 d-flex justify-content-center'>
-        <div className='w-50 mt-3 p-2'>
-          <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+      <main className='container inputform-container'>
+        <div className='row d-flex justify-content-center'></div>
+        <div className='input-card card mt-3 p-2'>
+          <h1 className='text-center'>Trail Maintenance Item Form</h1>
+          <form
+            onSubmit={this.props.handleSubmit(this.onSubmit)}
+            className='mt-5'
+          >
             <Field
               type='select'
               name='local_chapter'
@@ -149,6 +155,13 @@ class TrailInputForm extends React.Component {
               component={this.renderInput}
               label='Description:'
               placeholder='Description of trail issue'
+            />
+            <Field
+              type='text'
+              name='trailItemStatus'
+              component={this.renderInput}
+              defaultValue='active'
+              hideMe='d-none'
             />
 
             <div className='form-group row'>

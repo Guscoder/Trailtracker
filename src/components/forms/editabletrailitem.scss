@@ -1,0 +1,15 @@
+@import '../../styles/config-styles.scss';
+
+.editableitem-card {
+  font-family: $primary-font;
+  color: $darkblue;
+
+  .trailitem-card-image {
+    max-width: 200px;
+    object-fit: contain;
+  }
+
+  table {
+    color: $darkblue;
+  }
+}

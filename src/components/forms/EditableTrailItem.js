@@ -1,9 +1,9 @@
 import React from 'react';
-import { database } from '../firebaseConfig';
+import { database } from '../../services/firebaseConfig';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
-
+import * as actions from '../../actions';
+import './editabletrailitem.scss';
 class EditableTrailItem extends React.Component {
   constructor(props) {
     super(props);
@@ -14,17 +14,25 @@ class EditableTrailItem extends React.Component {
 
   componentDidMount() {
     console.log('Editable mounted');
+    console.log(this.props);
     console.log(this.props.trailItemId.trailItemId);
+    console.log(this.props.itemStatus);
 
     database
-      .ref(`trailitems/${this.props.trailItemId.trailItemId}`)
+      .ref(
+        `${this.props.itemStatus}items/${this.props.trailItemId.trailItemId}`
+      )
       .on('value', (snapshot) => {
         console.log(snapshot.val());
         this.setState({
+          localChapter: snapshot.val().local_chapter
+            ? snapshot.val().local_chapter
+            : 'Not Entered',
           trailhead: snapshot.val().trailhead_entrance,
           trailItemPhoto: snapshot.val().trailItemPhoto,
           dateFound: snapshot.val().date_found,
           reportingPerson: snapshot.val().reporting_person,
+          trailItemId: snapshot.val().trailItemId,
           gpsLatitude: snapshot.val().gps_latitude
             ? snapshot.val().gps_latitude
             : 0,
@@ -65,10 +73,9 @@ class EditableTrailItem extends React.Component {
   onHandleUpdate = (e) => {
     e.preventDefault();
     console.log('clicked update button');
-    database
-      .ref('trailitems')
-      .child(`${this.props.trailItemId.trailItemId}`)
-      .update({
+
+    if (this.state.selectedOption === 'active') {
+      database.ref('activeitems').child(`${this.state.trailItemId}`).update({
         trailhead_entrance: this.state.trailhead,
         date_found: this.state.dateFound,
         reporting_person: this.state.reportingPerson,
@@ -80,30 +87,54 @@ class EditableTrailItem extends React.Component {
         date_resolved: this.state.dateResolved,
         resolved_by: this.state.resolvedBy,
       });
-    // this.setState({
-    //   title: '',
-    //   body: '',
-    // });
-    this.props.updateTrailItem(this.props.trailItemId.trailItemId);
 
-    this.props.history.push(`/TrailworkList`);
+      console.log('saved to active database');
+      this.props.updateTrailItem(this.state.trailItemId);
+      this.props.history.push(`/TrailworkList/activeitems`);
+    } else if (this.state.selectedOption === 'completed') {
+      database.ref('completeditems').child(`${this.state.trailItemId}`).set({
+        local_chapter: this.state.localChapter,
+        trailhead_entrance: this.state.trailhead,
+        date_found: this.state.dateFound,
+        reporting_person: this.state.reportingPerson,
+        trailItemId: this.state.trailItemId,
+        trailItemPhoto: this.state.trailItemPhoto,
+        gps_latitude: this.state.gpsLatitude,
+        gps_longitude: this.state.gpsLongitude,
+        distance: this.state.distance,
+        description: this.state.description,
+        trailItemStatus: this.state.selectedOption,
+        date_resolved: this.state.dateResolved,
+        resolved_by: this.state.resolvedBy,
+      });
+      let activeItemRef = database.ref(
+        '/activeitems/' + this.state.trailItemId
+      );
+      activeItemRef.remove().then(function () {
+        console.log('Remove active succeeded.');
+      });
+
+      console.log('saved to completed database');
+      this.props.updateTrailItem(this.state.trailItemId);
+
+      this.props.history.push(`/TrailworkList/completeditems`);
+    }
+
+    // this.props.updateTrailItem(this.state.trailItemId);
+
+    // this.props.history.push(`/TrailworkList`);
   };
 
-  render = () => {
+  render = (props) => {
     // const trailItemId = this.props.trailItemId.trailItemId;
     // console.log('now logging ' + this.props.trailItemId.trailItemId);
 
     return (
-      <article className='w-100 d-flex justify-content-center'>
-        <div className='card w-50 mt-3 p-2'>
-          <img
-            className='card-img-top img-fluid'
-            alt='...'
-            src={this.state.trailItemPhoto}
-          />
-          <div className='card-body'>
-            <h5 className='card-title'>
-              Trailhead:
+      <article className='row justify-content-center'>
+        <div className='editableitem-card col-md-7 card mt-3 mb-5 p-2'>
+          <div className='card-body d-flex flex-column justify-content-center'>
+            <h5 className='card-title center'>
+              Trailhead:{' '}
               <input
                 type='text'
                 value={this.state.trailhead}
@@ -115,6 +146,11 @@ class EditableTrailItem extends React.Component {
               degrees. Plus there is a large boulder that has completely clocked
               the trail aout five miles in.
             </p>
+            <img
+              className='card-img-top trailitem-card-image mx-auto'
+              alt='...'
+              src={this.state.trailItemPhoto}
+            />
           </div>
           <table className='table table-hover'>
             <tbody className='w-100'>
@@ -125,6 +161,16 @@ class EditableTrailItem extends React.Component {
                     type='date'
                     value={this.state.dateFound}
                     onChange={(e) => this.handleInputChange(e, 'dateFound')}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th scope='row'>Local Chapter</th>
+                <td>
+                  <input
+                    type='text'
+                    value={this.state.localChapter}
+                    onChange={(e) => this.handleInputChange(e, 'localChapter')}
                   />
                 </td>
               </tr>
@@ -248,7 +294,7 @@ class EditableTrailItem extends React.Component {
               className='btn btn-danger'
               onClick={() => {
                 console.log('clicked cancel');
-                this.props.history.push(`/TrailworkList`);
+                this.props.history.push(`/TrailworkList/activeitems`);
               }}
             >
               Cancel
@@ -263,6 +309,7 @@ class EditableTrailItem extends React.Component {
 const mapStateToProps = (state) => {
   return {
     trailItemId: state.trailItemId,
+    itemStatus: state.updateTrailItem.trailItemStatus,
   };
 };
 

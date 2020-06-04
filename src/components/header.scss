@@ -1,0 +1,43 @@
+@import '../styles/config-styles.scss';
+
+.navbar {
+  //   position: fixed;
+  background-color: $darkblue;
+  font-family: 'Sanchez';
+  color: $lighttan;
+  height: $header-height;
+
+  @media only screen and (max-width: 705px) {
+    height: auto;
+    justify-content: center !important;
+    flex-direction: column;
+    .navbar-brand {
+      display: none;
+    }
+  }
+
+  // .navbar-brand {
+  //   @media only screen and (max-width: 705px) {
+  //     height: auto;
+  //     justify-content: center !important;
+  //   }
+  // }
+  .title-header {
+    font-size: 2em;
+  }
+
+  a {
+    text-decoration: none;
+    color: $lighttan;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: $lighttan;
+    font-weight: bold;
+  }
+
+  .nct-logo {
+    max-height: 50px;
+  }
+}

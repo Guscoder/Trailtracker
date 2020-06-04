@@ -68,7 +68,7 @@ const updateTrailItemReducer = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_TRAIL_ITEM:
       console.log('I updated trail item: ' + action.payload);
-      return { ...state, trailItemId: action.payload };
+      return { ...state, trailItemStatus: action.payload };
     default:
       return state;
   }

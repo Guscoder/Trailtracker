@@ -1,0 +1,17 @@
+@import '../styles/config-styles.scss';
+
+.trailworklist-table-container {
+  // margin-top: $header-height;
+  background-color: $general-bg;
+  font-family: $primary-font;
+
+  .trailworklist-table-head {
+    background-color: $darktan;
+    color: $darkblue;
+  }
+
+  tbody > tr:hover {
+    background-color: $darktan !important;
+    color: $general-bg;
+  }
+}

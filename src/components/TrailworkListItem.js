@@ -1,9 +1,10 @@
 import React from 'react';
-import ViewButton from './ViewButton';
-import EditButton from './EditButton';
-import DeleteButton from './DeleteButton';
+import ViewButton from './buttons/ViewButton';
+import EditButton from './buttons/EditButton';
+import DeleteButton from './buttons/DeleteButton';
 
 const TrailworkListItem = ({ trailItem }) => {
+  console.log(trailItem.trailItemStatus);
   return (
     <React.Fragment>
       <tr>
@@ -16,12 +17,16 @@ const TrailworkListItem = ({ trailItem }) => {
           <ViewButton trailId={trailItem.trailItemId} />
         </td>
         <td>
-          <EditButton trailId={trailItem.trailItemId} />
+          <EditButton
+            trailId={trailItem.trailItemId}
+            itemStatus={trailItem.trailItemStatus}
+          />
         </td>
         <td>
           <DeleteButton
             trailId={trailItem.trailItemId}
             trailPhotoId={trailItem.trailPhotoId}
+            itemStatus={trailItem.trailItemStatus}
           />
         </td>
       </tr>

@@ -1,5 +1,5 @@
 import React from 'react';
-import './additembutton.css';
+import './optionsbutton.scss';
 
 const OptionsButton = (props) => {
   return (
@@ -10,3 +10,11 @@ const OptionsButton = (props) => {
 };
 
 export default OptionsButton;
+
+// const OptionsButton = (props) => {
+//   return (
+//     <button type='button' className='additembutton'>
+//       {props.buttonText}
+//     </button>
+//   );
+// };

@@ -1,5 +1,8 @@
-import React from 'react';
-import { trailItemsRef, storageRef } from '../firebaseConfig';
+import {
+  trailItemsRef,
+  storageRef,
+  databaseRef,
+} from '../services/firebaseConfig';
 
 export const FETCH_TRAILITEMS = 'FETCH_TRAILITEMS';
 export const SELECT_GROUP = 'SELECT_GROUP';
@@ -23,6 +26,7 @@ export const addTrailItem = (newTrailItem) => async (dispatch) => {
   let picture = newTrailItem.trail_image[0];
 
   newTrailItem['trailItemId'] = theId;
+  newTrailItem['trailItemStatus'] = 'active';
 
   // newTrailItem['trailPhotoId'] = theId;
 
@@ -34,7 +38,10 @@ export const addTrailItem = (newTrailItem) => async (dispatch) => {
       .getDownloadURL()
       .then((url) => {
         newTrailItem['trailItemPhoto'] = url;
-        trailItemsRef.child(newTrailItem.trailItemId).set(newTrailItem);
+        databaseRef
+          .child('activeitems')
+          .child(newTrailItem.trailItemId)
+          .set(newTrailItem);
       });
     return;
   }, 3000);
@@ -45,8 +52,8 @@ export const addTrailItem = (newTrailItem) => async (dispatch) => {
   });
 };
 
-export const fetchTrailItems = () => async (dispatch) => {
-  trailItemsRef.on('value', (snapshot) => {
+export const fetchTrailItems = (listStatus) => async (dispatch) => {
+  databaseRef.child(listStatus).on('value', (snapshot) => {
     dispatch({
       type: FETCH_TRAILITEMS,
       payload: snapshot,
@@ -61,10 +68,10 @@ export const viewTrailItemId = (trailId) => async (dispatch) => {
   });
 };
 
-export const updateTrailItem = (updatedTrailItem) => async (dispatch) => {
+export const updateTrailItem = (itemStatus) => async (dispatch) => {
   dispatch({
     type: UPDATE_TRAIL_ITEM,
-    payload: updatedTrailItem,
+    payload: itemStatus,
   });
 };
 
@@ -74,17 +81,6 @@ export const deleteTrailItem = (trailId) => async (dispatch) => {
     payload: trailId,
   });
 };
-
-// export const getTrailItem = (trailItem) => async (dispatch) => {
-//   if (this.props.trailItems) {
-//     return this.props.trailItems.filter((trailItem) => {
-//       return <ViewTrailItem trailItem={trailItem} />;
-//     });
-//   } else {
-//     return (
-//       <p>Did not find the trail item</p>
-//     );
-// };
 
 export const removeTrailItem = (removeTrailItem) => async (dispatch) => {
   trailItemsRef.child(removeTrailItem).remove();
