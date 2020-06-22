@@ -10,6 +10,7 @@
     "bootstrap": "^4.4.1",
     "faker": "^4.1.0",
     "firebase": "^7.5.2",
+    "jquery": "^3.5.1",
     "node-sass": "^4.14.1",
     "react": "^16.9.0",
     "react-data-grid": "^7.0.0-canary.16",

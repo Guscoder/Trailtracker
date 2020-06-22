@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Layout from './Layout';
+import ProtectedRoute from './ProtectedRoute';
 
-import Header from './Header';
 import TrailInputForm from './forms/TrailInputForm';
 import TrailworkList from './TrailworkList';
 import OptionsPanel from './OptionsPanel';
@@ -12,15 +13,22 @@ import ViewTrailItem from './ViewTrailItem';
 import EditableTrailItem from './forms/EditableTrailItem';
 import '../styles/config-styles.scss';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <BrowserRouter>
-          <Layout>
+function App(props) {
+  const { isAuthenticated, isVerifying } = props;
+  return (
+    <div>
+      <BrowserRouter>
+        <Layout>
+          <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/login' component={Login} />
-            <Route path='/optionspanel' exact component={OptionsPanel} />
+            <ProtectedRoute
+              exact
+              path='/optionspanel'
+              component={OptionsPanel}
+              isAuthenticated={isAuthenticated}
+              isVerifying={isVerifying}
+            />
             <Route path='/trailinputform' exact component={TrailInputForm} />
             <Route
               path='/Trailworklist/:listStatus'
@@ -28,11 +36,18 @@ class App extends React.Component {
             />
             <Route path='/TrailworkItem' component={ViewTrailItem} />
             <Route path='/EditableTrailItem' component={EditableTrailItem} />
-          </Layout>
-        </BrowserRouter>
-      </div>
-    );
-  }
+          </Switch>
+        </Layout>
+      </BrowserRouter>
+    </div>
+  );
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    isVerifying: state.auth.isVerifying,
+  };
+}
+
+export default connect(mapStateToProps)(App);

@@ -86,6 +86,8 @@ export const removeTrailItem = (removeTrailItem) => async (dispatch) => {
   trailItemsRef.child(removeTrailItem).remove();
 };
 
+export * from './auth';
+
 // Action Creator
 
 // export const addTrailItem = formValues => {

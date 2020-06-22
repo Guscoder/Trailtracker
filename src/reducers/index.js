@@ -4,6 +4,7 @@ import { FETCH_TRAILITEMS } from '../actions';
 import { VIEW_TRAIL_ITEM } from '../actions';
 import { DELETE_TRAIL_ITEM } from '../actions';
 import { UPDATE_TRAIL_ITEM } from '../actions';
+import auth from './auth';
 
 const snapshotToArray = (snapshot) => {
   let returnArr = [];
@@ -84,13 +85,9 @@ const selectGroupReducer = (state = {}, action) => {
   }
 };
 
-const authReducer = (state = {}, action) => {
-  return state;
-};
-
 const rootReducer = combineReducers({
   form: formReducer,
-  auth: authReducer,
+  auth,
   trailwork: trailworkReducer,
   trailData: getTrailDataReducer,
   localGroupChooser: selectGroupReducer,
