@@ -1,0 +1,27 @@
+@import '../styles/config-styles.scss';
+
+.admin-menu {
+  position: !important;
+  height: auto;
+  // background-color: $lightblue !important;
+  margin-top: $header-height;
+
+  @media only screen and (max-width: 705px) {
+    margin-top: 102px;
+  }
+  .nav-link {
+    color: $lighttan !important;
+  }
+
+  .menu-links ul {
+    width: 100%;
+    justify-content: space-around;
+    li > a > button {
+      color: $lighttan !important;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: $lighttan !important;
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Layout from './Layout';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -12,9 +12,11 @@ import Home from './Home';
 import ViewTrailItem from './ViewTrailItem';
 import EditableTrailItem from './forms/EditableTrailItem';
 import '../styles/config-styles.scss';
+import AddUser from './users/AddUser';
+import ManageUsers from './users/ManageUsers';
 
 function App(props) {
-  const { isAuthenticated, isVerifying } = props;
+  const { isAuthenticated, isVerifying, currentUserRole } = props;
   return (
     <div>
       <BrowserRouter>
@@ -22,6 +24,8 @@ function App(props) {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/login' component={Login} />
+            <Route path='/users/manageusers' exact component={ManageUsers} />
+            <Route path='/users/adduser' exact component={AddUser} />
             <ProtectedRoute
               exact
               path='/optionspanel'
@@ -29,13 +33,47 @@ function App(props) {
               isAuthenticated={isAuthenticated}
               isVerifying={isVerifying}
             />
-            <Route path='/trailinputform' exact component={TrailInputForm} />
-            <Route
-              path='/Trailworklist/:listStatus'
-              component={TrailworkList}
-            />
-            <Route path='/TrailworkItem' component={ViewTrailItem} />
-            <Route path='/EditableTrailItem' component={EditableTrailItem} />
+            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+              <Route path='/trailinputform' exact component={TrailInputForm} />
+            ) : (
+              <Redirect to='/login' />
+            )}
+            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+              <Route path='/users/adduser' exact component={AddUser} />
+            ) : (
+              <Redirect to='/login' />
+            )}
+
+            {/* {isAuthenticated && currentUserRole === 'ADMIN' ? (
+              <Route path='/users/manageusers' exact component={ManageUsers} />
+            ) : (
+              <Redirect to='/login' />
+            )} */}
+            {/* <Route path='/users/adduser' exact component={AddUser} /> */}
+            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+              <Route
+                path='/Trailworklist/:listStatus'
+                render={(props) => (
+                  <TrailworkList key={Date.now()} {...props} />
+                )}
+              />
+            ) : (
+              <Redirect to='/login' />
+            )}
+
+            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+              <Route path='/TrailworkItem' component={ViewTrailItem} />
+            ) : (
+              <Redirect to='/login' />
+            )}
+
+            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+              <Route path='/EditableTrailItem' component={EditableTrailItem} />
+            ) : (
+              <Redirect to='/login' />
+            )}
+
+            <Route path='/users/manageusers' exact component={ManageUsers} />
           </Switch>
         </Layout>
       </BrowserRouter>
@@ -47,6 +85,7 @@ function mapStateToProps(state) {
   return {
     isAuthenticated: state.auth.isAuthenticated,
     isVerifying: state.auth.isVerifying,
+    currentUserRole: state.auth.currentUserRole,
   };
 }
 

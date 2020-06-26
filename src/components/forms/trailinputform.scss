@@ -1,16 +1,10 @@
 @import '../../styles/config-styles.scss';
 
-* {
-  font-family: 'Sanchez', sans-serif;
-}
-
-.inputform-container {
-  padding-top: $header-height;
-}
 .input-card {
   background-color: $lightblue !important;
+  z-index: 0;
   h1 {
-    font-size: 5vw;
+    font-size: 3vw;
     font-weight: bold;
   }
 }
@@ -18,4 +12,14 @@
 button[type='submit'] {
   background-color: $darktan;
   border: $lighttan solid 2px;
+}
+
+@media only screen and (max-width: 705px) {
+  .input-form-container {
+    margin-top: 30px;
+    h1 {
+      font-size: 4vw;
+      font-weight: bold;
+    }
+  }
 }

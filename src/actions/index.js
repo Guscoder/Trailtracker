@@ -10,6 +10,7 @@ export const ADD_TRAIL_ITEM = 'ADD_TRAIL_ITEM';
 export const VIEW_TRAIL_ITEM = 'VIEW_TRAIL_ITEM';
 export const DELETE_TRAIL_ITEM = 'DELETE_TRAIL_ITEM';
 export const UPDATE_TRAIL_ITEM = 'UPDATE_TRAIL_ITEM';
+export const FETCH_USERS = 'FETCH_USERS';
 
 export const selectLocalGroup = (localGroup) => {
   console.log('goaction');
@@ -23,28 +24,36 @@ export const addTrailItem = (newTrailItem) => async (dispatch) => {
   console.log('Yes the add trail item form action is working');
 
   let theId = new Date().getTime();
-  let picture = newTrailItem.trail_image[0];
+  let picture = newTrailItem.trail_image ? newTrailItem.trail_image[0] : '';
 
   newTrailItem['trailItemId'] = theId;
   newTrailItem['trailItemStatus'] = 'active';
 
-  // newTrailItem['trailPhotoId'] = theId;
+  if (picture) {
+    console.log('there is a photo');
+    storageRef.child('trailphotos/' + theId).put(picture);
 
-  storageRef.child('trailphotos/' + theId).put(picture);
+    setTimeout(() => {
+      storageRef
+        .child('trailphotos/' + theId)
+        .getDownloadURL()
+        .then((url) => {
+          newTrailItem['trailItemPhoto'] = url;
+          databaseRef
+            .child('activeitems')
+            .child(newTrailItem.trailItemId)
+            .set(newTrailItem);
+        });
+      return;
+    }, 3000);
+  } else {
+    console.log('there is NO photo');
 
-  setTimeout(() => {
-    storageRef
-      .child('trailphotos/' + theId)
-      .getDownloadURL()
-      .then((url) => {
-        newTrailItem['trailItemPhoto'] = url;
-        databaseRef
-          .child('activeitems')
-          .child(newTrailItem.trailItemId)
-          .set(newTrailItem);
-      });
-    return;
-  }, 3000);
+    databaseRef
+      .child('activeitems')
+      .child(newTrailItem.trailItemId)
+      .set(newTrailItem);
+  }
 
   dispatch({
     type: ADD_TRAIL_ITEM,
@@ -86,24 +95,14 @@ export const removeTrailItem = (removeTrailItem) => async (dispatch) => {
   trailItemsRef.child(removeTrailItem).remove();
 };
 
+export const fetchUsers = () => async (dispatch) => {
+  databaseRef.child('users').on('value', (snapshot) => {
+    console.log(snapshot);
+    dispatch({
+      type: FETCH_USERS,
+      payload: snapshot,
+    });
+  });
+};
+
 export * from './auth';
-
-// Action Creator
-
-// export const addTrailItem = formValues => {
-//   console.log("Yes the form action is working");
-//   return {
-//     type: "ADD_TRAILITEM",
-//     payload: formValues
-//   };
-// };
-
-// export const addTrailItem2 = formValues => {
-//   console.log("Yes the form action is working");
-//   return (dispatch, getState, { getFirebase }) => {
-//     // make async call to database
-//     const firestore = getFirestore();
-//     firestore.collections("trailworkItems").add({});
-//     dispatch({ type: "ADD_TRAILITEM", payload: formValues });
-//   };
-// };

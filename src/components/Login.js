@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { loginUser } from '../actions';
+import './login.scss';
 
 class Login extends Component {
-  state = { email: '', password: '', isAuthenticated: '' };
+  state = { email: '', password: '', isAuthenticated: '', role: '' };
 
   handleEmailChange = ({ target }) => {
     this.setState({ email: target.value });
@@ -28,57 +29,59 @@ class Login extends Component {
       return <Redirect to='/optionspanel' />;
     } else {
       return (
-        <div className='container-fluid'>
-          <form>
-            <div className='form-group row'>
-              <label
-                htmlFor='inputUserName'
-                className='col-sm-2 col-form-label'
-              >
-                Email Address
-              </label>
-              <div className='col-sm-10'>
-                <input
-                  type='email'
-                  className='form-control'
-                  placeholder='Email'
-                  id='email'
-                  name='email'
-                  onChange={this.handleEmailChange}
-                ></input>
-              </div>
-            </div>
-            <div className='form-group row'>
-              <label
-                htmlFor='inputPassword'
-                className='col-sm-2 col-form-label'
-              >
-                Password
-              </label>
-              <div className='col-sm-10'>
-                <input
-                  type='text'
-                  className='form-control'
-                  name='password'
-                  id='password'
-                  onChange={this.handlePasswordChange}
-                  placeholder='Password'
-                ></input>
-              </div>
-            </div>
-            {loginError && <p>Incorrect email or password.</p>}
-            <div className='form-group row'>
-              <div className='col-sm-10 offset-sm-2'>
-                <button
-                  type='submit'
-                  className='btn btn-primary'
-                  onClick={this.handleSubmit}
+        <div className='container-fluid login-container'>
+          <div className='row justify-content-center'>
+            <form>
+              <div className='form-group row'>
+                <label
+                  htmlFor='inputUserName'
+                  className='col-md-3 col-form-label'
                 >
-                  Sign in
-                </button>
+                  Email Address
+                </label>
+                <div className='col-md-9'>
+                  <input
+                    type='email'
+                    className='form-control'
+                    placeholder='Email'
+                    id='email'
+                    name='email'
+                    onChange={this.handleEmailChange}
+                  ></input>
+                </div>
               </div>
-            </div>
-          </form>
+              <div className='form-group row'>
+                <label
+                  htmlFor='inputPassword'
+                  className='col-md-3 col-form-label'
+                >
+                  Password
+                </label>
+                <div className='col-md-9'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    name='password'
+                    id='password'
+                    onChange={this.handlePasswordChange}
+                    placeholder='Password'
+                  ></input>
+                </div>
+              </div>
+              {loginError && <p>Incorrect email or password.</p>}
+              <div className='form-group row'>
+                <div className='col-md-9 offset-md-3'>
+                  <button
+                    type='submit'
+                    className='btn btn-primary'
+                    onClick={this.handleSubmit}
+                  >
+                    Sign in
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       );
     }

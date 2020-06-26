@@ -13,7 +13,8 @@ $lighttan: #f7f0de;
 $general-bg: #fefefe;
 $header-bg: #444444;
 
-$header-height: 15vh;
+$header-height: 76px;
+$header-height-with-nav: 131px;
 
 * {
   font-family: 'Sanchez', sans-serif;
@@ -30,5 +31,9 @@ body {
 .content {
   background-color: $lighttan;
   overflow: hidden;
-  min-height: 85vh;
+  // min-height: 85vh;
+
+  @media only screen and (max-width: 705px) {
+    overflow: visible;
+  }
 }

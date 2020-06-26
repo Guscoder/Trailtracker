@@ -7,9 +7,6 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 class ViewButton extends React.Component {
   viewItem = () => {
-    console.log('view button working');
-    console.log(this.props.trailId);
-
     this.props.viewTrailItemId(this.props.trailId);
     this.props.history.push(`/TrailworkItem`);
   };

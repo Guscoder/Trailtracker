@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import './editabletrailitem.scss';
+
 class EditableTrailItem extends React.Component {
   constructor(props) {
     super(props);
@@ -13,10 +14,10 @@ class EditableTrailItem extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Editable mounted');
-    console.log(this.props);
-    console.log(this.props.trailItemId.trailItemId);
-    console.log(this.props.itemStatus);
+    // console.log('Editable mounted');
+    // console.log(this.props);
+    // console.log(this.props.trailItemId.trailItemId);
+    // console.log(this.props.itemStatus);
 
     database
       .ref(
@@ -36,7 +37,7 @@ class EditableTrailItem extends React.Component {
           gpsLatitude: snapshot.val().gps_latitude
             ? snapshot.val().gps_latitude
             : 0,
-          distance: snapshot.val().distance,
+          distance: snapshot.val().distance || null,
           gpsLongitude: snapshot.val().gps_longitude
             ? snapshot.val().gps_longitude
             : 0,
@@ -55,6 +56,32 @@ class EditableTrailItem extends React.Component {
         });
       });
   }
+
+  renderSelectField = (field) => {
+    // console.log(field.input.value);
+    return (
+      <div className='form-group row'>
+        <label
+          htmlFor='local_chapter'
+          className='col-sm-4 col-form-label text-sm-right'
+        >
+          {field.label}
+        </label>
+
+        <div className='col-sm-7'>
+          <select
+            {...field.input}
+            onChange={(value) => field.input.onChange(value)}
+            type='select'
+            className='form-control'
+            id='local_chapter'
+          >
+            {field.children}
+          </select>
+        </div>
+      </div>
+    );
+  };
 
   handleInputChange = (e, field) => {
     console.log(e.target.value);
@@ -76,6 +103,7 @@ class EditableTrailItem extends React.Component {
 
     if (this.state.selectedOption === 'active') {
       database.ref('activeitems').child(`${this.state.trailItemId}`).update({
+        local_chapter: this.state.localChapter,
         trailhead_entrance: this.state.trailhead,
         date_found: this.state.dateFound,
         reporting_person: this.state.reportingPerson,
@@ -167,11 +195,37 @@ class EditableTrailItem extends React.Component {
               <tr>
                 <th scope='row'>Local Chapter</th>
                 <td>
-                  <input
-                    type='text'
+                  <select
                     value={this.state.localChapter}
                     onChange={(e) => this.handleInputChange(e, 'localChapter')}
-                  />
+                  >
+                    <option value=''>Choose Local Chapter</option>
+
+                    <option value='State of Michigan'>
+                      Entire state of Michigan
+                    </option>
+                    <option value='Western Michigan Chapter'>
+                      Western Michigan Chapter
+                    </option>
+                    <option value='Harbor Springs Chapter'>
+                      Harbor Springs Chapter
+                    </option>
+                    <option value='Jordan Valley 45 Chapter'>
+                      Jordan Valley 45 Chapter
+                    </option>
+                    <option value='Spirit of the Woods Chapter'>
+                      Spirit of the Woods Chapter
+                    </option>
+                    <option value='Chief Noonday Chapter'>
+                      Chief Noonday Chapter
+                    </option>
+                    <option value='Grand Traverse Hiking Club Chapter'>
+                      Grand Traverse Hiking Club Chapter
+                    </option>
+                    <option value='Chief Baw Beese Chapter'>
+                      Chief Baw Beese Chapter
+                    </option>
+                  </select>
                 </td>
               </tr>
               <tr>

@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from './Header';
-
 import TrailworkListItem from './TrailworkListItem';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -8,20 +6,16 @@ import './trailworklist.scss';
 
 class TrailworkList extends React.Component {
   componentDidMount() {
+    console.log(this.props);
     const { listStatus } = this.props.match.params;
     console.log(listStatus);
-
     this.props.fetchTrailItems(listStatus);
     console.log('I mounted');
   }
 
   renderTrailList = () => {
-    // console.log(typeof this.props.trailItems);
-    // console.log(this.props.trailItems);
-
     if (this.props.trailItems) {
       return this.props.trailItems.map((trailItem) => {
-        console.log(trailItem);
         return <TrailworkListItem trailItem={trailItem} key={trailItem.key} />;
       });
     } else {

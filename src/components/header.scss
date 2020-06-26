@@ -1,14 +1,17 @@
 @import '../styles/config-styles.scss';
 
 .navbar {
-  //   position: fixed;
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  height: auto;
   background-color: $darkblue;
   font-family: 'Sanchez';
   color: $lighttan;
-  height: $header-height;
+
+  z-index: 99;
 
   @media only screen and (max-width: 705px) {
-    height: auto;
     justify-content: center !important;
     flex-direction: column;
     .navbar-brand {
@@ -16,12 +19,6 @@
     }
   }
 
-  // .navbar-brand {
-  //   @media only screen and (max-width: 705px) {
-  //     height: auto;
-  //     justify-content: center !important;
-  //   }
-  // }
   .title-header {
     font-size: 2em;
   }

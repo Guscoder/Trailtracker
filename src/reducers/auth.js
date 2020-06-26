@@ -7,6 +7,7 @@ import {
   LOGOUT_FAILURE,
   VERIFY_REQUEST,
   VERIFY_SUCCESS,
+  CURRENT_USER_ROLE,
 } from '../actions/';
 
 export default (
@@ -17,6 +18,7 @@ export default (
     loginError: false,
     logoutError: false,
     isAuthenticated: false,
+    currentUserRole: '',
     user: {},
   },
   action
@@ -29,6 +31,7 @@ export default (
         loginError: false,
       };
     case LOGIN_SUCCESS:
+      console.log(action.user);
       return {
         ...state,
         isLoggingIn: false,
@@ -72,6 +75,11 @@ export default (
       return {
         ...state,
         isVerifying: false,
+      };
+    case CURRENT_USER_ROLE:
+      return {
+        ...state,
+        currentUserRole: action.role,
       };
     default:
       return state;

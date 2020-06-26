@@ -1,4 +1,4 @@
-import { auth } from '../services/firebaseConfig';
+import { auth, databaseRef } from '../services/firebaseConfig';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -8,6 +8,7 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 export const VERIFY_REQUEST = 'VERIFY_REQUEST';
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
+export const CURRENT_USER_ROLE = 'CURRENT_USER_ROLE';
 
 const requestLogin = () => {
   console.log('trying to login');
@@ -61,6 +62,34 @@ const verifySuccess = () => {
   };
 };
 
+const setCurrentUserRole = (role) => {
+  return {
+    type: CURRENT_USER_ROLE,
+    role,
+  };
+};
+
+const getUserRole = (user) => (dispatch) => {
+  auth.onAuthStateChanged(function (user) {
+    let myUserId = auth.currentUser.uid;
+    databaseRef
+      .child('users')
+      .orderByKey()
+      .equalTo(myUserId)
+      .on('value', function (snapshot) {
+        if (snapshot.val()) {
+          let userData = snapshot.val()[myUserId];
+          let userRole = userData['role'];
+          console.log(userData);
+          console.log(userRole);
+          dispatch(setCurrentUserRole(userRole));
+        } else {
+          alert('Error finding user in database!');
+        }
+      });
+  });
+};
+
 export const loginUser = (email, password) => (dispatch) => {
   dispatch(requestLogin());
   console.log('trying to get into database');
@@ -68,6 +97,24 @@ export const loginUser = (email, password) => (dispatch) => {
     .signInWithEmailAndPassword(email, password)
     .then(function (user) {
       console.log('user logged in');
+      auth.onAuthStateChanged(function (user) {
+        let myUserId = auth.currentUser.uid;
+        databaseRef
+          .child('users')
+          .orderByKey()
+          .equalTo(myUserId)
+          .on('value', function (snapshot) {
+            if (snapshot.val()) {
+              let userData = snapshot.val()[myUserId];
+              let userRole = userData['role'];
+              console.log(userData);
+              console.log(userRole);
+              dispatch(setCurrentUserRole(userRole));
+            } else {
+              alert('Error finding user in database!');
+            }
+          });
+      });
       dispatch(receiveLogin(user));
     })
     .catch(function (error) {
@@ -81,6 +128,10 @@ export const loginUser = (email, password) => (dispatch) => {
       }
     });
 };
+
+// export const addUserToDatabase () => (dispatch) => {
+
+// }
 
 export const logoutUser = () => (dispatch) => {
   dispatch(requestLogout());
@@ -96,10 +147,28 @@ export const logoutUser = () => (dispatch) => {
 };
 
 export const verifyAuth = () => (dispatch) => {
+  console.log('running verify');
   dispatch(verifyRequest());
   auth.onAuthStateChanged((user) => {
     if (user !== null) {
       dispatch(receiveLogin(user));
+      getUserRole(user);
+      // let myUserId = auth.currentUser.uid;
+      // databaseRef
+      //   .child('users')
+      //   .orderByKey()
+      //   .equalTo(myUserId)
+      //   .on('value', function (snapshot) {
+      //     if (snapshot.val()) {
+      //       let userData = snapshot.val()[myUserId];
+      //       let userRole = userData['role'];
+      //       console.log(userData);
+      //       console.log(userRole);
+      //       dispatch(setCurrentUserRole(userRole));
+      //     } else {
+      //       alert('Error finding user in database!');
+      //     }
+      //   });
       console.log('user not null');
     }
     console.log('verifying success');

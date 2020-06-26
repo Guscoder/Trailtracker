@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import { FETCH_TRAILITEMS } from '../actions';
+import { FETCH_TRAILITEMS, FETCH_USERS } from '../actions';
 import { VIEW_TRAIL_ITEM } from '../actions';
 import { DELETE_TRAIL_ITEM } from '../actions';
 import { UPDATE_TRAIL_ITEM } from '../actions';
+
 import auth from './auth';
 
 const snapshotToArray = (snapshot) => {
@@ -75,6 +76,18 @@ const updateTrailItemReducer = (state = {}, action) => {
   }
 };
 
+const fetchUsersReducer = (state = {}, action) => {
+  switch (action.type) {
+    case FETCH_USERS:
+      const newData = snapshotToArray(action.payload);
+      console.log('I got new users');
+      console.log(newData);
+      return { ...state, userList: newData };
+    default:
+      return state;
+  }
+};
+
 const selectGroupReducer = (state = {}, action) => {
   switch (action.payload) {
     case 'Western Michigan Chapter':
@@ -94,6 +107,7 @@ const rootReducer = combineReducers({
   trailItemId: viewTrailItemIdReducer,
   deleteTrailItem: deleteTrailItemReducer,
   updateTrailItem: updateTrailItemReducer,
+  fetchUsers: fetchUsersReducer,
 });
 
 export default rootReducer;

@@ -1,9 +1,11 @@
 @import '../styles/config-styles.scss';
 
 .trailworklist-table-container {
-  // margin-top: $header-height;
   background-color: $general-bg;
   font-family: $primary-font;
+  @media only screen and (max-width: 705px) {
+    padding-top: 24px;
+  }
 
   .trailworklist-table-head {
     background-color: $darktan;

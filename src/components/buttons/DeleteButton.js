@@ -21,27 +21,6 @@ class DeleteButton extends React.Component {
         console.log('Remove active succeeded.');
       });
 
-    // switch (itemStatus) {
-    //   case 'active':
-    //     let activeItemRef = database.ref(`/${itemStatus}items/` + trailId);
-    //     activeItemRef.remove().then(function () {
-    //       console.log('Remove active succeeded.');
-    //     });
-    //     break;
-    //   case 'completed':
-    //     let completedItemRef = database.ref(`/${itemStatus}items/` + trailId);
-    //     completedItemRef.remove().then(function () {
-    //       console.log('Remove completed succeeded.');
-    //     });
-    //     break;
-    //   default:
-    //     let submittedItemRef = database.ref(`/${itemStatus}items/` + trailId);
-    //     submittedItemRef.remove().then(function () {
-    //       console.log('Remove submission succeeded.');
-    //     });
-    //     break;
-    // }
-
     photoRef
       .delete()
       .then(function () {

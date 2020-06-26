@@ -3,10 +3,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../actions';
 import { withRouter } from 'react-router-dom';
+import AdminMenu from './AdminMenu';
+
 import '../styles/config-styles.scss';
 import './header.scss';
 
 class Header extends React.Component {
+  componentDidMount() {
+    console.log('header mounted');
+  }
   handleLogout = () => {
     const { dispatch } = this.props;
     dispatch(logoutUser());
@@ -47,13 +52,13 @@ class Header extends React.Component {
             </button>
             <span className='sr-only'>(current)</span>
           </li>
-
+          {/* 
           <li className='nav-item active'>
             <Link className='nav-link' to='/optionspanel'>
               Admin
             </Link>
             <span className='sr-only'>(current)</span>
-          </li>
+          </li> */}
         </>
       );
     } else {
@@ -69,10 +74,8 @@ class Header extends React.Component {
   };
 
   render() {
-    const { isLoggingOut, logoutError, isAuthenticated } = this.props;
-
     return (
-      <nav className='navbar d-flex'>
+      <nav className='navbar d-flex' id='main-header'>
         <a
           className='navbar-brand'
           target='_blank '
@@ -85,12 +88,13 @@ class Header extends React.Component {
           />
         </a>
         <h1 className='title-header'>
-          <Link to='/'>Trail Tracker</Link>
+          <Link to='/home'>Trail Tracker</Link>
         </h1>
 
         <div className='nav-links justify-content-end'>
           <ul className='navbar-nav'>{this.loginStatus()}</ul>
         </div>
+        {this.props.isAuthenticated ? <AdminMenu /> : ''}
       </nav>
     );
   }

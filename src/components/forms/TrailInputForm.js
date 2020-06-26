@@ -59,7 +59,7 @@ class TrailInputForm extends React.Component {
 
   render() {
     return (
-      <main className='container inputform-container'>
+      <main className='container input-form-container'>
         <div className='row d-flex justify-content-center'></div>
         <div className='input-card card mt-3 p-2'>
           <h1 className='text-center'>Trail Maintenance Item Form</h1>
