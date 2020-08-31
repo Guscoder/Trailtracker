@@ -8,6 +8,8 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 class EditButton extends React.Component {
   editItem = () => {
     console.log('edit button working');
+    console.log(this.props);
+
     console.log(this.props.trailId);
     console.log(this.props.itemStatus);
     this.props.viewTrailItemId(this.props.trailId);

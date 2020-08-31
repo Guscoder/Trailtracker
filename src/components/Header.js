@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../actions';
 import { withRouter } from 'react-router-dom';
-import AdminMenu from './AdminMenu';
-
-import '../styles/config-styles.scss';
 import './header.scss';
 
 class Header extends React.Component {
@@ -75,27 +72,28 @@ class Header extends React.Component {
 
   render() {
     return (
-      <nav className='navbar d-flex' id='main-header'>
-        <a
-          className='navbar-brand'
-          target='_blank '
-          href='https://northcountrytrail.org/'
-        >
-          <img
-            src={require('../assets/images/nctLogo.jpeg')}
-            alt='north country trail logo'
-            className='nct-logo'
-          />
-        </a>
-        <h1 className='title-header'>
-          <Link to='/home'>Trail Tracker</Link>
-        </h1>
+      <>
+        <nav className='navbar d-flex'>
+          <a
+            className='navbar-brand'
+            target='_blank '
+            href='https://northcountrytrail.org/'
+          >
+            <img
+              src={require('../assets/images/nctLogo.jpeg')}
+              alt='north country trail logo'
+              className='nct-logo'
+            />
+          </a>
+          <h1 className='title-header'>
+            <Link to='/'>Trail Tracker</Link>
+          </h1>
 
-        <div className='nav-links justify-content-end'>
-          <ul className='navbar-nav'>{this.loginStatus()}</ul>
-        </div>
-        {this.props.isAuthenticated ? <AdminMenu /> : ''}
-      </nav>
+          <div className='nav-links justify-content-end'>
+            <ul className='navbar-nav'>{this.loginStatus()}</ul>
+          </div>
+        </nav>
+      </>
     );
   }
 }
@@ -103,9 +101,6 @@ class Header extends React.Component {
 function mapStateToProps(state) {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    isVerifying: state.auth.isVerifying,
-    isLoggingOut: state.auth.isLoggingOut,
-    logoutError: state.auth.logoutError,
   };
 }
 

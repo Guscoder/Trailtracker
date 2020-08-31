@@ -3,9 +3,9 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { addTrailItem } from '../../actions';
 import FieldFileInput from './FieldFileInput';
-import './trailinputform.scss';
+import './volunteerinputform.scss';
 
-class TrailInputForm extends React.Component {
+class VolunteerInputForm extends React.Component {
   renderInput({ input, type, label, name, placeholder, hideMe }) {
     return (
       <div className='form-group row'>
@@ -53,15 +53,15 @@ class TrailInputForm extends React.Component {
 
   onSubmit = (formValues) => {
     // console.log(formValues);
-    this.props.addTrailItem(formValues);
+    this.props.addTrailItem(formValues, 'submitted');
     this.props.history.push(`/optionspanel`);
   };
 
   render() {
     return (
-      <main className='container input-form-container pt-3 pb-5'>
+      <main className='container volunteer-form-container p-2'>
         <div className='row d-flex justify-content-center'></div>
-        <div className='input-card card p-2'>
+        <div className='input-card card mt-3 p-2'>
           <h1 className='text-center'>Trail Maintenance Item Form</h1>
           <form
             onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -180,12 +180,13 @@ class TrailInputForm extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addTrailItem: (formValues) => dispatch(addTrailItem(formValues)),
+    addTrailItem: (formValues, itemStatus) =>
+      dispatch(addTrailItem(formValues, itemStatus)),
   };
 };
 
 const formWrapped = reduxForm({
-  form: 'trailIssueForm',
-})(TrailInputForm);
+  form: 'volunteerInputForm',
+})(VolunteerInputForm);
 
 export default connect(mapDispatchToProps, { addTrailItem })(formWrapped);

@@ -9,3 +9,9 @@
 .nav-add-item {
   color: $lighttan !important;
 }
+
+.additembutton:active,
+.additembutton:focus {
+  outline: none;
+  border: none;
+}

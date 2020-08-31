@@ -20,16 +20,17 @@ class Login extends Component {
     const { dispatch } = this.props;
     const { email, password } = this.state;
     dispatch(loginUser(email, password));
-    this.props.history.push('/optionspanel');
+    this.props.history.push('/homepage');
   };
 
   render() {
     const { loginError, isAuthenticated } = this.props;
+    console.log(this.props);
     if (isAuthenticated) {
-      return <Redirect to='/optionspanel' />;
+      return <Redirect to='/HomePage' />;
     } else {
       return (
-        <div className='container-fluid login-container'>
+        <div className='login-container p-4'>
           <div className='row justify-content-center'>
             <form>
               <div className='form-group row'>

@@ -10,12 +10,37 @@ const UserProfile = ({ user }) => {
         <td>{user.username}</td>
         <td>{user.email}</td>
         <td>{user.role}</td>
-
+        {/* <td>
+          <table className='table'>
+            <tr>
+              <th scope='col'>First Aid Certification</th>
+            </tr>
+            <tr>
+              <td>Start Date: </td>
+              <td>nov</td>
+            </tr>
+            <tr>
+              <td>Expires: </td>
+              <td>nov</td>
+            </tr>
+            <tr>
+              <th scope='col'>Sawyer Certification</th>
+            </tr>
+            <tr>
+              <td>Start Date: </td>
+              <td>nov</td>
+            </tr>
+            <tr>
+              <td>Expires: </td>
+              <td>nov</td>
+            </tr>
+          </table>
+        </td> */}
         <td>
           <EditButton />
         </td>
         <td>
-          <DeleteButton />
+          <DeleteButton userEmail={user.email} />
         </td>
       </tr>
     </React.Fragment>

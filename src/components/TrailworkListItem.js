@@ -14,7 +14,10 @@ const TrailworkListItem = ({ trailItem }) => {
         <td>{trailItem.local_chapter}</td>
 
         <td>
-          <ViewButton trailId={trailItem.trailItemId} />
+          <ViewButton
+            trailId={trailItem.trailItemId}
+            trailItemStatus={trailItem.trailItemStatus}
+          />
         </td>
         <td>
           <EditButton
@@ -25,7 +28,7 @@ const TrailworkListItem = ({ trailItem }) => {
         <td>
           <DeleteButton
             trailId={trailItem.trailItemId}
-            trailPhotoId={trailItem.trailPhotoId}
+            trailPhotoId={trailItem.trailItemPhoto}
             itemStatus={trailItem.trailItemStatus}
           />
         </td>

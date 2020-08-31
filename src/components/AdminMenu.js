@@ -9,7 +9,6 @@ class AdminMenu extends Component {
     if (e.target.classList.contains('dropdown-toggle')) {
       console.log('my target');
       // if clicked inside menu do something
-      // this.node.classList.remove('show');
     } else {
       // If clicked outside menu, close the navbar.
       this.node.classList.remove('show');
@@ -23,6 +22,7 @@ class AdminMenu extends Component {
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClick, false);
   }
+
   render() {
     return (
       <nav className='navbar admin-menu navbar-expand-md navbar-dark'>
@@ -67,19 +67,13 @@ class AdminMenu extends Component {
                 className='dropdown-menu'
                 aria-labelledby='navbarDropdownMenuLink'
               >
-                <Link to='/trailworkList/activeitems' className='dropdown-item'>
+                <Link to='/tablelist/activeitems' className='dropdown-item'>
                   <OptionsButton buttonText={'Active Items'} />
                 </Link>
-                <Link
-                  to='/trailworkList/completeditems'
-                  className='dropdown-item'
-                >
+                <Link to='/tablelist/completeditems' className='dropdown-item'>
                   <OptionsButton buttonText={'Completed Items'} />
-                </Link>{' '}
-                <Link
-                  to='/trailworkList/submitteditems'
-                  className='dropdown-item'
-                >
+                </Link>
+                <Link to='/tablelist/submitteditems' className='dropdown-item'>
                   <OptionsButton buttonText={'New Submissions'} />
                 </Link>
               </div>
@@ -103,7 +97,7 @@ class AdminMenu extends Component {
                 <Link to='/users/adduser' className='dropdown-item'>
                   <OptionsButton buttonText={'Add User'} />
                 </Link>
-                <Link to='/users/manageusers' className='dropdown-item'>
+                <Link to='/users/userlist' className='dropdown-item'>
                   <OptionsButton buttonText={'Edit/Delete User'} />
                 </Link>
               </div>

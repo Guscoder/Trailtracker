@@ -1,14 +1,13 @@
 @import '../styles/config-styles.scss';
 
-.home-screen {
+.homepage {
   width: 100%;
-  height: calc(100vh - 76px);
-  margin-top: $header-height;
-  img {
+  height: calc(100vh - 131px);
+  .homepage-image {
     width: 100%;
-    height: calc(100vh - 76px);
+    height: calc(100vh - 131px);
     object-fit: cover;
-    object-position: 50% 7%;
+    object-position: 50% 45%;
     @media screen and (max-width: 1025px) {
       width: 100%;
       object-fit: cover;

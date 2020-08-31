@@ -12,14 +12,14 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const primaryApp = firebase.initializeApp(firebaseConfig, 'PrimaryApp');
 
 // export const myFirebase = firebase.initializeApp(firebaseConfig);
 
-export const databaseRef = firebase.database().ref();
-export const auth = firebase.auth();
-export const storage = firebase.storage();
-export const storageRef = firebase.storage().ref();
-export const database = firebase.database();
-
+export const databaseRef = primaryApp.database().ref();
+export const auth = primaryApp.auth();
+export const storage = primaryApp.storage();
+export const storageRef = primaryApp.storage().ref();
+export const database = primaryApp.database();
+export const firebaseDb = primaryApp;
 export const trailItemsRef = databaseRef.child('trailitems');

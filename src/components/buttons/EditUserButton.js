@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-class EditUserButton extends Component {
-  editItem = () => {
-    console.log('edit button working');
-
-    this.props.viewTrailItemId(this.props.trailId);
-
-    this.props.updateTrailItem(this.props.itemStatus);
-    this.props.history.push(`/EditableTrailItem`);
+class DeleteUserButton extends Component {
+  deleteItem = () => {
+    this.props.history.push();
   };
   render() {
     return (
       <button
         type='button'
         className='btn'
-        aria-label='edit'
-        onClick={() => this.editItem()}
+        aria-label='delete'
+        onClick={() => this.deleteItem()}
       >
         <FontAwesomeIcon icon={faEdit} />
       </button>
@@ -28,4 +22,4 @@ class EditUserButton extends Component {
   }
 }
 
-export default EditUserButton;
+export default DeleteUserButton;

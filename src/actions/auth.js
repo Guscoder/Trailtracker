@@ -11,7 +11,6 @@ export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
 export const CURRENT_USER_ROLE = 'CURRENT_USER_ROLE';
 
 const requestLogin = () => {
-  console.log('trying to login');
   return {
     type: LOGIN_REQUEST,
   };
@@ -25,11 +24,11 @@ const receiveLogin = (user) => {
   };
 };
 
-const loginError = () => {
-  return {
-    type: LOGIN_FAILURE,
-  };
-};
+// const loginError = () => {
+//   return {
+//     type: LOGIN_FAILURE,
+//   };
+// };
 
 const requestLogout = () => {
   return {
@@ -62,7 +61,7 @@ const verifySuccess = () => {
   };
 };
 
-const setCurrentUserRole = (role) => {
+export const setCurrentUserRole = (role) => {
   return {
     type: CURRENT_USER_ROLE,
     role,
@@ -80,8 +79,6 @@ const getUserRole = (user) => (dispatch) => {
         if (snapshot.val()) {
           let userData = snapshot.val()[myUserId];
           let userRole = userData['role'];
-          console.log(userData);
-          console.log(userRole);
           dispatch(setCurrentUserRole(userRole));
         } else {
           alert('Error finding user in database!');
@@ -92,11 +89,10 @@ const getUserRole = (user) => (dispatch) => {
 
 export const loginUser = (email, password) => (dispatch) => {
   dispatch(requestLogin());
-  console.log('trying to get into database');
+
   auth
     .signInWithEmailAndPassword(email, password)
     .then(function (user) {
-      console.log('user logged in');
       auth.onAuthStateChanged(function (user) {
         let myUserId = auth.currentUser.uid;
         databaseRef
@@ -107,8 +103,6 @@ export const loginUser = (email, password) => (dispatch) => {
             if (snapshot.val()) {
               let userData = snapshot.val()[myUserId];
               let userRole = userData['role'];
-              console.log(userData);
-              console.log(userRole);
               dispatch(setCurrentUserRole(userRole));
             } else {
               alert('Error finding user in database!');
@@ -128,10 +122,6 @@ export const loginUser = (email, password) => (dispatch) => {
       }
     });
 };
-
-// export const addUserToDatabase () => (dispatch) => {
-
-// }
 
 export const logoutUser = () => (dispatch) => {
   dispatch(requestLogout());

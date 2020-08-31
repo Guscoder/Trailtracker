@@ -1,8 +1,12 @@
 @import '../../styles/config-styles.scss';
 
+.volunteer-form-container {
+  margin-top: $header-height;
+}
+
 .input-card {
   background-color: $lightblue !important;
-  z-index: 0;
+  z-index: 5;
   h1 {
     font-size: 3vw;
     font-weight: bold;
@@ -14,15 +18,12 @@ button[type='submit'] {
   border: $lighttan solid 2px;
 }
 
-@media only screen and (max-width: 705px) {
-  .input-form-container {
-    margin-top: 30px;
-    .input-card {
-      margin-top: 2em;
-      h1 {
-        font-size: 1.8em;
-        font-weight: bold;
-      }
+@media only screen and (max-width: 650px) {
+  .volunteer-form-container {
+    margin-top: $header-height-with-nav;
+    h1 {
+      font-size: 2em;
+      font-weight: bold;
     }
   }
 }

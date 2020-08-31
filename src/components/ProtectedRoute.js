@@ -5,6 +5,7 @@ const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
   isVerifying,
+  currentUserRole,
   ...rest
 }) => (
   <Route

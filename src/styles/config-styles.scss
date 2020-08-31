@@ -28,12 +28,32 @@ body {
   background-color: $lighttan;
 }
 
+.main-app {
+  height: 100vh;
+}
+
+.main-layout {
+  background-color: $lighttan;
+  overflow: hidden;
+  // min-height: 100vh;
+  @media only screen and (max-width: 705px) {
+    overflow: scroll;
+    min-height: 100%;
+  }
+}
+
 .content {
   background-color: $lighttan;
   overflow: hidden;
-  // min-height: 85vh;
+  min-height: 100vh;
 
   @media only screen and (max-width: 705px) {
-    overflow: visible;
+    overflow: scroll;
+    min-height: 100%;
   }
+}
+
+.btn.active:focus {
+  outline: none;
+  border: none;
 }

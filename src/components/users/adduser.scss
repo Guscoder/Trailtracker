@@ -4,3 +4,9 @@
   font-weight: 700;
   color: $darkblue;
 }
+
+@media only screen and (max-width: 705px) {
+  .adduser-title {
+    font-size: 1.8em;
+  }
+}

@@ -1,6 +1,11 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import { FETCH_TRAILITEMS, FETCH_USERS } from '../actions';
+import {
+  FETCH_TRAILITEMS,
+  FETCH_USERS,
+  DELETE_USER,
+  ADD_USER,
+} from '../actions';
 import { VIEW_TRAIL_ITEM } from '../actions';
 import { DELETE_TRAIL_ITEM } from '../actions';
 import { UPDATE_TRAIL_ITEM } from '../actions';
@@ -23,7 +28,7 @@ const snapshotToArray = (snapshot) => {
 const trailworkReducer = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TRAIL_ITEM':
-      console.log('created item', action.payload);
+      console.log('created item');
       return { ...state, trailItems: { ...state.trailItems } };
     case 'ADD_TRAILITEM_ERROR':
       console.log('Add trailitem error', action.err);
@@ -76,13 +81,38 @@ const updateTrailItemReducer = (state = {}, action) => {
   }
 };
 
-const fetchUsersReducer = (state = {}, action) => {
+// const fetchUsersReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case FETCH_USERS:
+//       const newData = snapshotToArray(action.payload);
+//       console.log('I got new users');
+//       console.log(newData);
+//       return { ...state, userList: newData };
+//     default:
+//       return state;
+//   }
+// };
+
+const usersReducer = (state = [], action) => {
   switch (action.type) {
     case FETCH_USERS:
       const newData = snapshotToArray(action.payload);
       console.log('I got new users');
       console.log(newData);
       return { ...state, userList: newData };
+    case DELETE_USER:
+      console.log('deleting user reducer firing');
+      console.log(action.payload);
+      const userEmail = action.payload;
+      const newUserData = state.userList.filter((user) => {
+        return user.email !== userEmail;
+      });
+      return { ...state, userList: newUserData };
+    case ADD_USER:
+      console.log('Reducer adding a user');
+      const newUser = action.payload;
+      const newUserList = state.userList.push(newUser);
+      return { ...state, userList: newUserList };
     default:
       return state;
   }
@@ -107,7 +137,9 @@ const rootReducer = combineReducers({
   trailItemId: viewTrailItemIdReducer,
   deleteTrailItem: deleteTrailItemReducer,
   updateTrailItem: updateTrailItemReducer,
-  fetchUsers: fetchUsersReducer,
+  fetchUsers: usersReducer,
+  deleteUsers: usersReducer,
+  addUser: usersReducer,
 });
 
 export default rootReducer;

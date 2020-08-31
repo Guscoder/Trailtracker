@@ -8,11 +8,10 @@
   background-color: $darkblue;
   font-family: 'Sanchez';
   color: $lighttan;
-
   z-index: 99;
 
   @media only screen and (max-width: 705px) {
-    justify-content: center !important;
+    justify-content: center;
     flex-direction: column;
     .navbar-brand {
       display: none;
@@ -42,5 +41,11 @@
 
   .nct-logo {
     max-height: 50px;
+  }
+
+  .login-button:focus,
+  .logout-button:focus {
+    border: none;
+    outline: none;
   }
 }

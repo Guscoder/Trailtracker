@@ -1,0 +1,19 @@
+@import '../styles/config-styles.scss';
+
+.trailworklist-table-container {
+  background-color: $general-bg;
+  font-family: $primary-font;
+  @media only screen and (max-width: 705px) {
+    margin-top: 20px;
+  }
+
+  .trailworklist-table-head {
+    background-color: $darktan !important;
+    color: $darkblue;
+  }
+
+  tbody > tr:hover {
+    background-color: $darktan !important;
+    color: $general-bg;
+  }
+}

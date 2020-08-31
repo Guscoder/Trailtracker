@@ -10,11 +10,3 @@ const OptionsButton = (props) => {
 };
 
 export default OptionsButton;
-
-// const OptionsButton = (props) => {
-//   return (
-//     <button type='button' className='additembutton'>
-//       {props.buttonText}
-//     </button>
-//   );
-// };

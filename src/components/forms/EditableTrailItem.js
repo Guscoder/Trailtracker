@@ -14,31 +14,31 @@ class EditableTrailItem extends React.Component {
   }
 
   componentDidMount() {
-    // console.log('Editable mounted');
-    // console.log(this.props);
-    // console.log(this.props.trailItemId.trailItemId);
-    // console.log(this.props.itemStatus);
+    console.log(this.props);
+    console.log('i am mounting the edit screen');
+    console.log(this.props.trailItemId.trailItemId);
+    console.log(this.props.itemStatus);
 
     database
       .ref(
         `${this.props.itemStatus}items/${this.props.trailItemId.trailItemId}`
       )
-      .on('value', (snapshot) => {
+      .once('value', (snapshot) => {
         console.log(snapshot.val());
         this.setState({
           localChapter: snapshot.val().local_chapter
             ? snapshot.val().local_chapter
             : 'Not Entered',
           trailhead: snapshot.val().trailhead_entrance,
-          trailItemPhoto: snapshot.val().trailItemPhoto,
+          trailItemPhoto: snapshot.val().trailItemPhoto || '',
           dateFound: snapshot.val().date_found,
           reportingPerson: snapshot.val().reporting_person,
           trailItemId: snapshot.val().trailItemId,
-          gpsLatitude: snapshot.val().gps_latitude
+          gps_latitude: snapshot.val().gps_latitude
             ? snapshot.val().gps_latitude
             : 0,
-          distance: snapshot.val().distance || null,
-          gpsLongitude: snapshot.val().gps_longitude
+          distance: snapshot.val().distance || 0,
+          gps_longitude: snapshot.val().gps_longitude
             ? snapshot.val().gps_longitude
             : 0,
           description: snapshot.val().description
@@ -68,7 +68,7 @@ class EditableTrailItem extends React.Component {
           {field.label}
         </label>
 
-        <div className='col-sm-7'>
+        <div className='col-sm-8'>
           <select
             {...field.input}
             onChange={(value) => field.input.onChange(value)}
@@ -100,15 +100,19 @@ class EditableTrailItem extends React.Component {
   onHandleUpdate = (e) => {
     e.preventDefault();
     console.log('clicked update button');
+    console.log(this.props.itemStatus);
 
-    if (this.state.selectedOption === 'active') {
-      database.ref('activeitems').child(`${this.state.trailItemId}`).update({
+    if (this.props.itemStatus === 'submitted') {
+      console.log('Finally my' + this.state.trailItemStatus);
+      database.ref('activeitems').child(`${this.state.trailItemId}`).set({
         local_chapter: this.state.localChapter,
         trailhead_entrance: this.state.trailhead,
         date_found: this.state.dateFound,
         reporting_person: this.state.reportingPerson,
-        gps_latitude: this.state.gpsLatitude,
-        gps_longitude: this.state.gpsLongitude,
+        trailItemId: this.state.trailItemId,
+        trailItemPhoto: this.state.trailItemPhoto,
+        gps_latitude: this.state.gps_latitude,
+        gps_longitude: this.state.gps_longitude,
         distance: this.state.distance,
         description: this.state.description,
         trailItemStatus: this.state.selectedOption,
@@ -116,9 +120,44 @@ class EditableTrailItem extends React.Component {
         resolved_by: this.state.resolvedBy,
       });
 
+      // let submittedItemRef = database.ref(
+      //   'submitteditems/' + this.state.trailItemId
+      // );
+      console.log(this.state.trailItemId);
+      database
+        .ref('/submitteditems/' + this.state.trailItemId)
+        .remove()
+        .then(function () {
+          console.log('Remove submitted succeeded.');
+        });
+
       console.log('saved to active database');
+
       this.props.updateTrailItem(this.state.trailItemId);
-      this.props.history.push(`/TrailworkList/activeitems`);
+      alert('Item Updated!');
+      this.props.history.push(`/tablelist/activeitems`);
+    } else if (this.state.selectedOption === 'active') {
+      database.ref('activeitems').child(`${this.state.trailItemId}`).update({
+        local_chapter: this.state.localChapter,
+        trailhead_entrance: this.state.trailhead,
+        date_found: this.state.dateFound,
+        reporting_person: this.state.reportingPerson,
+        gps_latitude: this.state.gps_latitude,
+        gps_longitude: this.state.gps_longitude,
+        distance: this.state.distance,
+        description: this.state.description,
+        trailItemStatus: this.state.selectedOption,
+        trailItemId: this.state.trailItemId,
+        date_resolved: this.state.dateResolved,
+        resolved_by: this.state.resolvedBy,
+      });
+
+      // if (this.state.trailItemId.){}
+      console.log('saved to active database');
+
+      this.props.updateTrailItem(this.state.trailItemId);
+      alert('Item updated!');
+      this.props.history.push(`/tablelist/activeitems`);
     } else if (this.state.selectedOption === 'completed') {
       database.ref('completeditems').child(`${this.state.trailItemId}`).set({
         local_chapter: this.state.localChapter,
@@ -127,41 +166,37 @@ class EditableTrailItem extends React.Component {
         reporting_person: this.state.reportingPerson,
         trailItemId: this.state.trailItemId,
         trailItemPhoto: this.state.trailItemPhoto,
-        gps_latitude: this.state.gpsLatitude,
-        gps_longitude: this.state.gpsLongitude,
+        gps_latitude: this.state.gps_latitude,
+        gps_longitude: this.state.gps_longitude,
         distance: this.state.distance,
         description: this.state.description,
         trailItemStatus: this.state.selectedOption,
         date_resolved: this.state.dateResolved,
         resolved_by: this.state.resolvedBy,
       });
-      let activeItemRef = database.ref(
-        '/activeitems/' + this.state.trailItemId
-      );
+      let activeItemRef = database.ref('activeitems/' + this.state.trailItemId);
       activeItemRef.remove().then(function () {
         console.log('Remove active succeeded.');
       });
 
       console.log('saved to completed database');
       this.props.updateTrailItem(this.state.trailItemId);
-
-      this.props.history.push(`/TrailworkList/completeditems`);
+      this.setState({
+        hasFetched: false,
+      });
+      alert('Item Updated!');
+      this.props.history.push(`/tablelist/completeditems`);
     }
-
-    // this.props.updateTrailItem(this.state.trailItemId);
-
-    // this.props.history.push(`/TrailworkList`);
   };
 
   render = (props) => {
-    // const trailItemId = this.props.trailItemId.trailItemId;
-    // console.log('now logging ' + this.props.trailItemId.trailItemId);
+    const { itemStatus } = this.props;
 
     return (
-      <article className='row justify-content-center'>
-        <div className='editableitem-card col-md-7 card mt-3 mb-5 p-2'>
-          <div className='card-body d-flex flex-column justify-content-center'>
-            <h5 className='card-title center'>
+      <main className='container'>
+        <div className='row d-flex justify-content-center'>
+          <div className='editableitem-card card col-md-8 mt-4 mb-5 p-2'>
+            <h5 className='card-title text-center pt-2'>
               Trailhead:{' '}
               <input
                 type='text'
@@ -174,188 +209,238 @@ class EditableTrailItem extends React.Component {
               degrees. Plus there is a large boulder that has completely clocked
               the trail aout five miles in.
             </p>
-            <img
-              className='card-img-top trailitem-card-image mx-auto'
-              alt='...'
-              src={this.state.trailItemPhoto}
-            />
-          </div>
-          <table className='table table-hover'>
-            <tbody className='w-100'>
-              <tr>
-                <th scope='row'>Date Found</th>
-                <td>
-                  <input
-                    type='date'
-                    value={this.state.dateFound}
-                    onChange={(e) => this.handleInputChange(e, 'dateFound')}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Local Chapter</th>
-                <td>
-                  <select
-                    value={this.state.localChapter}
-                    onChange={(e) => this.handleInputChange(e, 'localChapter')}
-                  >
-                    <option value=''>Choose Local Chapter</option>
-
-                    <option value='State of Michigan'>
-                      Entire state of Michigan
-                    </option>
-                    <option value='Western Michigan Chapter'>
-                      Western Michigan Chapter
-                    </option>
-                    <option value='Harbor Springs Chapter'>
-                      Harbor Springs Chapter
-                    </option>
-                    <option value='Jordan Valley 45 Chapter'>
-                      Jordan Valley 45 Chapter
-                    </option>
-                    <option value='Spirit of the Woods Chapter'>
-                      Spirit of the Woods Chapter
-                    </option>
-                    <option value='Chief Noonday Chapter'>
-                      Chief Noonday Chapter
-                    </option>
-                    <option value='Grand Traverse Hiking Club Chapter'>
-                      Grand Traverse Hiking Club Chapter
-                    </option>
-                    <option value='Chief Baw Beese Chapter'>
-                      Chief Baw Beese Chapter
-                    </option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Reporting Person</th>
-                <td>
-                  <input
-                    type='text'
-                    value={this.state.reportingPerson}
-                    onChange={(e) =>
-                      this.handleInputChange(e, 'reportingPerson')
-                    }
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>GPS Location</th>
-
-                <td>
-                  <input
-                    type='number'
-                    value={this.state.gpsLatitude}
-                    onChange={(e) => this.handleInputChange(e, 'gpsLatitude')}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Trail Head Entrance</th>
-                <td>
-                  <input
-                    type='text'
-                    value={this.state.trailhead}
-                    onChange={(e) => this.handleInputChange(e, 'trailhead')}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Distance from Trailhead</th>
-                <td>
-                  <input
-                    type='text'
-                    value={this.state.distance}
-                    onChange={(e) => this.handleInputChange(e, 'distance')}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Status</th>
-                <td>
-                  <div className='form-check'>
-                    <label className='form-check-label' htmlFor='activeItem'>
+            {this.state.trailItemPhoto ? (
+              <img
+                className='card-img-top trailitem-card-image mx-auto'
+                alt='Nothing uploaded'
+                src={this.state.trailItemPhoto}
+              />
+            ) : (
+              <p>No photo provided</p>
+            )}
+            <div className='card-body'>
+              <table className='table table-hover'>
+                <tbody className='w-100'>
+                  <tr class='row'>
+                    <th scope='row' className='col-sm-4'>
+                      Date Found
+                    </th>
+                    <td className='col-sm-8'>
                       <input
-                        type='radio'
-                        id='activeItem'
-                        name='trailItemStatus'
-                        className='form-check-input'
-                        value='active'
-                        checked={this.state.selectedOption === 'active'}
-                        onChange={this.handleOptionChange}
+                        type='date'
+                        value={this.state.dateFound}
+                        onChange={(e) => this.handleInputChange(e, 'dateFound')}
                       />
-                      Active
-                    </label>
-                  </div>
-                  <div className='form-check'>
-                    <label className='form-check-label' htmlFor='completedItem'>
+                    </td>
+                  </tr>
+                  <tr className='form-group row'>
+                    <th scope='row' className='col-sm-4 col-form-label'>
+                      Local Chapter
+                    </th>
+                    <td className='col-sm-8'>
+                      <select
+                        value={this.state.localChapter}
+                        onChange={(e) =>
+                          this.handleInputChange(e, 'localChapter')
+                        }
+                        className='form-control'
+                      >
+                        <option value=''>Choose Local Chapter</option>
+
+                        <option value='State of Michigan'>
+                          Entire state of Michigan
+                        </option>
+                        <option value='Western Michigan Chapter'>
+                          Western Michigan Chapter
+                        </option>
+                        <option value='Harbor Springs Chapter'>
+                          Harbor Springs Chapter
+                        </option>
+                        <option value='Jordan Valley 45 Chapter'>
+                          Jordan Valley 45 Chapter
+                        </option>
+                        <option value='Spirit of the Woods Chapter'>
+                          Spirit of the Woods Chapter
+                        </option>
+                        <option value='Chief Noonday Chapter'>
+                          Chief Noonday Chapter
+                        </option>
+                        <option value='Grand Traverse Hiking Club Chapter'>
+                          Grand Traverse Hiking Club Chapter
+                        </option>
+                        <option value='Chief Baw Beese Chapter'>
+                          Chief Baw Beese Chapter
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Reporting Person
+                    </th>
+                    <td className='col-sm-8'>
                       <input
-                        type='radio'
-                        id='completedItem'
-                        name='trailItemStatus'
-                        className='form-check-input'
-                        value='completed'
-                        checked={this.state.selectedOption === 'completed'}
-                        onChange={this.handleOptionChange}
+                        type='text'
+                        value={this.state.reportingPerson}
+                        onChange={(e) =>
+                          this.handleInputChange(e, 'reportingPerson')
+                        }
                       />
-                      Completed
-                    </label>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Date Resolved</th>
-                <td>
-                  <div className='form-group'>
-                    <input
-                      type='date'
-                      className='form-control'
-                      value={this.state.dateResolved}
-                      onChange={(e) =>
-                        this.handleInputChange(e, 'dateResolved')
-                      }
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope='row'>Resolved by</th>
-                <td>
-                  <div className='form-group'>
-                    <input
-                      type='text'
-                      value={this.state.resolvedBy}
-                      onChange={(e) => this.handleInputChange(e, 'resolvedBy')}
-                      className='form-control'
-                      placeholder='Sawyer name'
-                    ></input>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div className='card-body d-flex justify-content-between'>
-            <button
-              type='submit'
-              className='btn btn-primary'
-              onClick={this.onHandleUpdate}
-            >
-              Submit Changes
-            </button>
-            <button
-              type='submit'
-              className='btn btn-danger'
-              onClick={() => {
-                console.log('clicked cancel');
-                this.props.history.push(`/TrailworkList/activeitems`);
-              }}
-            >
-              Cancel
-            </button>
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      GPS Latitude
+                    </th>
+                    <td className='col-sm-8'>
+                      <input
+                        type='number'
+                        value={this.state.gps_latitude}
+                        onChange={(e) =>
+                          this.handleInputChange(e, 'gps_latitude')
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      GPS Longitude
+                    </th>
+                    <td className='col-sm-8'>
+                      <input
+                        type='number'
+                        value={this.state.gps_longitude}
+                        onChange={(e) =>
+                          this.handleInputChange(e, 'gps_longitude')
+                        }
+                      />
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Trail Head Entrance
+                    </th>
+                    <td classname='col-sm-8'>
+                      <input
+                        type='text'
+                        value={this.state.trailhead}
+                        onChange={(e) => this.handleInputChange(e, 'trailhead')}
+                      />
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Distance from Trailhead
+                    </th>
+                    <td className='col-sm-8'>
+                      <input
+                        type='text'
+                        value={this.state.distance}
+                        onChange={(e) => this.handleInputChange(e, 'distance')}
+                      />
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Status
+                    </th>
+                    <td className='col-sm-8'>
+                      <div className='form-check'>
+                        <label
+                          className='form-check-label'
+                          htmlFor='activeItem'
+                        >
+                          <input
+                            type='radio'
+                            id='activeItem'
+                            name='trailItemStatus'
+                            className='form-check-input'
+                            value='active'
+                            checked={this.state.selectedOption === 'active'}
+                            onChange={this.handleOptionChange}
+                          />
+                          Active
+                        </label>
+                      </div>
+                      <div className='form-check'>
+                        <label
+                          className='form-check-label'
+                          htmlFor='completedItem'
+                        >
+                          <input
+                            type='radio'
+                            id='completedItem'
+                            name='trailItemStatus'
+                            className='form-check-input'
+                            value='completed'
+                            checked={this.state.selectedOption === 'completed'}
+                            onChange={this.handleOptionChange}
+                          />
+                          Completed
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Date Resolved
+                    </th>
+                    <td className='col-sm-8'>
+                      <div className='form-group'>
+                        <input
+                          type='date'
+                          className='form-control'
+                          value={this.state.dateResolved}
+                          onChange={(e) =>
+                            this.handleInputChange(e, 'dateResolved')
+                          }
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Resolved by
+                    </th>
+                    <td className='col-sm-8'>
+                      <div className='form-group'>
+                        <input
+                          type='text'
+                          value={this.state.resolvedBy}
+                          onChange={(e) =>
+                            this.handleInputChange(e, 'resolvedBy')
+                          }
+                          className='form-control'
+                          placeholder='Sawyer name'
+                        ></input>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className='row d-flex justify-content-between'>
+                <button
+                  type='submit'
+                  className='btn btn-primary'
+                  onClick={this.onHandleUpdate}
+                >
+                  Submit Changes
+                </button>
+                <button
+                  type='submit'
+                  className='btn btn-danger'
+                  onClick={() => {
+                    console.log('clicked cancel');
+                    this.props.history.push(`/tablelist/${itemStatus}items`);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </article>
+      </main>
     );
   };
 }

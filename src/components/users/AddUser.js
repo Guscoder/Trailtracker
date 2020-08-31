@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
-import { auth, databaseRef } from '../../services/firebaseConfig';
-
+import * as firebase from 'firebase';
+import { connect } from 'react-redux';
+import { addUser } from '../../actions';
+import { databaseRef } from '../../services/firebaseConfig';
 import { withRouter } from 'react-router-dom';
 import './adduser.scss';
+
+const fireConfig = {
+  apiKey: 'AIzaSyAWfYB2aX2JVmlJkD8iFm0SLGFFNuxtKio',
+  authDomain: 'trailtracker-1060b.firebaseapp.com',
+  databaseURL: 'https://trailtracker-1060b.firebaseio.com',
+};
+
+const secondaryApp = firebase.initializeApp(fireConfig, 'SecondaryApp');
+
 const AddUser = () => (
   <main className='p-5'>
     <h1 className='text-center adduser-title'>Add New User</h1>
@@ -12,7 +23,8 @@ const AddUser = () => (
 
 const ROLES = {
   ADMIN: 'ADMIN',
-  TRAIL_VOLUNTEER: 'TRAIL_VOLUNTEER',
+  MAINTAINER: 'MAINTAINER',
+  SAWYER: 'SAWYER',
 };
 
 const INITIAL_STATE = {
@@ -20,8 +32,9 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
-  // isAdmin: '',
-  // isVolunteer: '',
+  isAdmin: '',
+  isMaintainer: '',
+  isSawyer: '',
   error: null,
 };
 
@@ -32,30 +45,46 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = (event) => {
-    const { username, email, passwordOne, isAdmin, isVolunteer } = this.state;
+    const {
+      username,
+      email,
+      passwordOne,
+      isAdmin,
+      isMaintainer,
+      isSawyer,
+    } = this.state;
+
     let role = '';
 
     if (isAdmin) {
       role = ROLES.ADMIN;
-    } else if (isVolunteer) {
-      role = ROLES.TRAIL_VOLUNTEER;
+    } else if (isMaintainer) {
+      role = ROLES.MAINTAINER;
+    } else if (isSawyer) {
+      role = ROLES.SAWYER;
     } else {
       alert('You did not choose a role');
     }
 
-    auth
+    secondaryApp
+      .auth()
       .createUserWithEmailAndPassword(email, passwordOne)
       .then((authUser) => {
         console.log(authUser);
+        console.log(role);
         databaseRef.child('users').child(authUser.user.uid).set({
           username,
           email,
           role,
         });
+        addUser();
+
+        secondaryApp.auth().signOut();
       })
-      .then((authUser) => {
+      .then(() => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push('/optionspanel');
+        console.log('Adding user and props: ' + this.props);
+        this.props.history.push('/users/userlist');
       })
       .catch((error) => {
         this.setState({ error });
@@ -63,12 +92,14 @@ class SignUpFormBase extends Component {
 
     event.preventDefault();
   };
+
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   onChangeCheckbox = (event) => {
     this.setState({ [event.target.name]: event.target.checked });
+    console.log(this.state);
   };
 
   render() {
@@ -78,17 +109,21 @@ class SignUpFormBase extends Component {
       passwordOne,
       passwordTwo,
       isAdmin,
-      isVolunteer,
+      isMaintainer,
+      isSawyer,
       error,
     } = this.state;
+
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
       username === '' ||
-      (isAdmin && isVolunteer) ||
-      (!isAdmin && !isVolunteer);
-
+      (isAdmin && isMaintainer && isSawyer) ||
+      (!isAdmin && !isMaintainer && !isSawyer) ||
+      (isAdmin && isMaintainer) ||
+      (isAdmin && isSawyer) ||
+      (isMaintainer && isSawyer);
     return (
       <form onSubmit={this.onSubmit}>
         <div className='form-group row'>
@@ -172,26 +207,39 @@ class SignUpFormBase extends Component {
               <input
                 name='isAdmin'
                 type='checkbox'
-                class='form-check-input'
+                className='form-check-input'
                 id='administrator'
                 // checked={isAdmin}
                 onChange={this.onChangeCheckbox}
               />
-              <label class='form-check-label' htmlFor='administrator'>
+              <label className='form-check-label' htmlFor='administrator'>
                 Administrator
               </label>
             </div>
             <div className='d-xs-block pl-3'>
               <input
-                name='isVolunteer'
+                name='isMaintainer'
                 type='checkbox'
-                class='form-check-input pl-5'
-                id='volunteer'
-                // checked={isVolunteer}
+                className='form-check-input pl-5'
+                id='maintainer'
+                // checked={isMaintainer}
                 onChange={this.onChangeCheckbox}
               />
-              <label class='form-check-label' htmlFor='volunteer'>
-                Trail Volunteer
+              <label className='form-check-label' htmlFor='maintainer'>
+                Trail Maintainer
+              </label>
+            </div>
+            <div className='d-xs-block pl-3'>
+              <input
+                name='isSawyer'
+                type='checkbox'
+                className='form-check-input pl-5'
+                id='sawyer'
+                // checked={isSawyer}
+                onChange={this.onChangeCheckbox}
+              />
+              <label className='form-check-label' htmlFor='sawyer'>
+                Sawyer
               </label>
             </div>
           </div>
@@ -208,7 +256,14 @@ class SignUpFormBase extends Component {
   }
 }
 
-const SignUpForm = withRouter(SignUpFormBase);
+const mapDispatchToProps = {
+  addUser,
+};
+
+const SignUpForm = connect(
+  null,
+  mapDispatchToProps
+)(withRouter(SignUpFormBase));
 
 export default AddUser;
 
