@@ -8,6 +8,10 @@ import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import EditUserButton from '../buttons/EditUserButton';
 import DeleteUserButton from '../buttons/DeleteUserButton';
 import '../tablelist.scss';
+function addDashes(f) {
+  let phoneNum = f.slice(0, 3) + '-' + f.slice(3, 6) + '-' + f.slice(6);
+  return phoneNum;
+}
 
 function Table({ columns, data }) {
   const {
@@ -24,8 +28,6 @@ function Table({ columns, data }) {
     useSortBy
   );
 
-  // We don't want to render all 2000 rows for this example, so cap
-  // it at 20 for this use case
   const firstPageRows = rows;
 
   return (
@@ -114,6 +116,21 @@ function UserList(props) {
           {
             Header: 'Email ',
             accessor: 'email',
+          },
+          {
+            Header: 'Phone ',
+            accessor: 'phone',
+            Cell: (cellInfo) => {
+              console.log(cellInfo.row.original.phone);
+              return cellInfo.row.original.phone
+                ? addDashes(cellInfo.row.original.phone)
+                : '';
+              // if (cellInfo.row.original.phone) {
+              //   return addDashes(cellInfo.row.original.phone);
+              // } else {
+              //   return '';
+              // }
+            },
           },
           {
             Header: 'Role ',

@@ -41,6 +41,9 @@ class EditableTrailItem extends React.Component {
           gps_longitude: snapshot.val().gps_longitude
             ? snapshot.val().gps_longitude
             : 0,
+          mile_marker: snapshot.val().mile_marker
+            ? snapshot.val().mile_marker
+            : '',
           description: snapshot.val().description
             ? snapshot.val().description
             : '',
@@ -58,7 +61,6 @@ class EditableTrailItem extends React.Component {
   }
 
   renderSelectField = (field) => {
-    // console.log(field.input.value);
     return (
       <div className='form-group row'>
         <label
@@ -115,14 +117,12 @@ class EditableTrailItem extends React.Component {
         gps_longitude: this.state.gps_longitude,
         distance: this.state.distance,
         description: this.state.description,
+        mile_marker: this.state.mile_marker,
         trailItemStatus: this.state.selectedOption,
         date_resolved: this.state.dateResolved,
         resolved_by: this.state.resolvedBy,
       });
 
-      // let submittedItemRef = database.ref(
-      //   'submitteditems/' + this.state.trailItemId
-      // );
       console.log(this.state.trailItemId);
       database
         .ref('/submitteditems/' + this.state.trailItemId)
@@ -146,13 +146,13 @@ class EditableTrailItem extends React.Component {
         gps_longitude: this.state.gps_longitude,
         distance: this.state.distance,
         description: this.state.description,
+        mile_marker: this.state.mile_marker,
         trailItemStatus: this.state.selectedOption,
         trailItemId: this.state.trailItemId,
         date_resolved: this.state.dateResolved,
         resolved_by: this.state.resolvedBy,
       });
 
-      // if (this.state.trailItemId.){}
       console.log('saved to active database');
 
       this.props.updateTrailItem(this.state.trailItemId);
@@ -170,6 +170,7 @@ class EditableTrailItem extends React.Component {
         gps_longitude: this.state.gps_longitude,
         distance: this.state.distance,
         description: this.state.description,
+        mile_marker: this.state.mile_marker,
         trailItemStatus: this.state.selectedOption,
         date_resolved: this.state.dateResolved,
         resolved_by: this.state.resolvedBy,
@@ -196,18 +197,24 @@ class EditableTrailItem extends React.Component {
       <main className='container'>
         <div className='row d-flex justify-content-center'>
           <div className='editableitem-card card col-md-8 mt-4 mb-5 p-2'>
-            <h5 className='card-title text-center pt-2'>
-              Trailhead:{' '}
+            <h5 className='card-title text-center pt-2'>Trailhead:</h5>
+            <p className='card-text'>
               <input
                 type='text'
                 value={this.state.trailhead}
                 onChange={(e) => this.handleInputChange(e, 'trailhead')}
+                className='textarea-box'
               />
-            </h5>
+            </p>
+
+            <h5 className='card-title text-center pt-2'>Description: </h5>
             <p className='card-text'>
-              The problem on this trail is the relatively steep incline of 38
-              degrees. Plus there is a large boulder that has completely clocked
-              the trail aout five miles in.
+              <input
+                type='text'
+                value={this.state.description}
+                onChange={(e) => this.handleInputChange(e, 'description')}
+                className='textarea-box'
+              />
             </p>
             {this.state.trailItemPhoto ? (
               <img
@@ -318,13 +325,29 @@ class EditableTrailItem extends React.Component {
                   </tr>
                   <tr className='row'>
                     <th className='col-sm-4' scope='row'>
-                      Trail Head Entrance
+                      TrailHead
                     </th>
-                    <td classname='col-sm-8'>
+                    <td className='col-sm-8'>
                       <input
                         type='text'
+                        rows='4'
                         value={this.state.trailhead}
                         onChange={(e) => this.handleInputChange(e, 'trailhead')}
+                        className='w-100'
+                      />
+                    </td>
+                  </tr>
+                  <tr className='row'>
+                    <th className='col-sm-4' scope='row'>
+                      Mile Marker
+                    </th>
+                    <td className='col-sm-8'>
+                      <input
+                        type='text'
+                        value={this.state.mile_marker}
+                        onChange={(e) =>
+                          this.handleInputChange(e, 'mile_marker')
+                        }
                       />
                     </td>
                   </tr>

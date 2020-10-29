@@ -9,7 +9,7 @@ import { storageRef, database } from '../../services/firebaseConfig';
 class DeleteButton extends React.Component {
   deleteItem = (trailId, trailPhotoId, itemStatus) => {
     this.props.updateTrailItem(itemStatus);
-
+    console.log('delete item status:' + itemStatus);
     if (trailPhotoId) {
       const photoRef = storageRef.child(`trailphotos/${trailId}`);
       photoRef
@@ -22,7 +22,6 @@ class DeleteButton extends React.Component {
           console.log('Error removing photo!');
         });
     }
-
     database
       .ref(`/${itemStatus}items/` + trailId)
       .remove()
@@ -36,6 +35,19 @@ class DeleteButton extends React.Component {
         alert('Error removing item!');
       });
     this.props.history.push(`/tablelist/${itemStatus}items`);
+    // database
+    //   .ref(`/${itemStatus}items/` + trailId)
+    //   .remove()
+    //   .then(function () {
+    //     console.log('Remove active succeeded.');
+    //   })
+    //   .then(() => {
+    //     alert('Item Deleted!');
+    //   })
+    //   .catch(function (error) {
+    //     alert('Error removing item!');
+    //   });
+    // this.props.history.push(`/tablelist/${itemStatus}items`);
   };
 
   render() {

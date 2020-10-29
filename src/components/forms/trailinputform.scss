@@ -14,6 +14,11 @@ button[type='submit'] {
   border: $lighttan solid 2px;
 }
 
+.error {
+  color: red;
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 705px) {
   .input-form-container {
     margin-top: 30px;

@@ -14,6 +14,7 @@ import AddUser from './users/AddUser';
 import UserList from './users/UserList';
 
 import '../styles/config-styles.scss';
+import './app.scss';
 
 function App(props) {
   const { isAuthenticated, currentUserRole } = props;

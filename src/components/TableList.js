@@ -50,7 +50,7 @@ function Table({ columns, data, listHeader }) {
       >
         <thead className='trailworklist-table-head'>
           <tr className='table-title text-center'>
-            <td colSpan='7'>
+            <td colSpan='8'>
               <h1>{renderListTitle(listHeader)}</h1>
             </td>
           </tr>
@@ -108,17 +108,12 @@ function Table({ columns, data, listHeader }) {
 
 function TableList(props) {
   useEffect(() => {
-    console.log(props);
     const { listStatus } = props.match.params;
-    console.log(listStatus);
     props.fetchTrailItems(listStatus);
-    console.log('I mounted');
   }, []);
 
   const data = props.trailItems;
-
-  console.log(props.trailItems);
-
+  console.log(data);
   const columns = React.useMemo(
     (listStatus) => [
       {
@@ -137,6 +132,10 @@ function TableList(props) {
           {
             Header: 'Trailhead ',
             accessor: 'trailhead_entrance',
+          },
+          {
+            Header: 'Mile Marker ',
+            accessor: 'mile_marker',
           },
           {
             Header: 'Chapter ',

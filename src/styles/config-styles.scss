@@ -16,44 +16,40 @@ $header-bg: #444444;
 $header-height: 76px;
 $header-height-with-nav: 131px;
 
-* {
-  font-family: 'Sanchez', sans-serif;
-}
+// :root {
+//   background-color: $lighttan;
+//   font-family: $primary-font, sans-serif;
+// }
+// body {
+//   background-color: $lighttan;
+// }
 
-:root {
-  background-color: $lighttan;
-  font-family: $primary-font, sans-serif;
-}
-body {
-  background-color: $lighttan;
-}
+// .main-app {
+//   height: 100vh;
+// }
 
-.main-app {
-  height: 100vh;
-}
+// .main-layout {
+//   background-color: $lighttan;
+//   overflow: hidden;
+//   // min-height: 100vh;
+//   @media only screen and (max-width: 705px) {
+//     overflow: scroll;
+//     min-height: 100%;
+//   }
+// }
 
-.main-layout {
-  background-color: $lighttan;
-  overflow: hidden;
-  // min-height: 100vh;
-  @media only screen and (max-width: 705px) {
-    overflow: scroll;
-    min-height: 100%;
-  }
-}
+// .content {
+//   background-color: $lighttan;
+//   overflow: hidden;
+//   min-height: 100vh;
 
-.content {
-  background-color: $lighttan;
-  overflow: hidden;
-  min-height: 100vh;
+//   @media only screen and (max-width: 705px) {
+//     overflow: scroll;
+//     min-height: 100%;
+//   }
+// }
 
-  @media only screen and (max-width: 705px) {
-    overflow: scroll;
-    min-height: 100%;
-  }
-}
-
-.btn.active:focus {
-  outline: none;
-  border: none;
-}
+// .btn.active:focus {
+//   outline: none;
+//   border: none;
+// }

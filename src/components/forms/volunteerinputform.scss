@@ -2,6 +2,7 @@
 
 .volunteer-form-container {
   margin-top: $header-height;
+  overflow: scroll;
 }
 
 .input-card {
@@ -16,6 +17,11 @@
 button[type='submit'] {
   background-color: $darktan;
   border: $lighttan solid 2px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
 }
 
 @media only screen and (max-width: 650px) {

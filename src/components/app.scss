@@ -1,0 +1,43 @@
+@import '../styles/config-styles.scss';
+
+* {
+  font-family: 'Sanchez', sans-serif;
+}
+
+:root {
+  background-color: $lighttan;
+  font-family: $primary-font, sans-serif;
+}
+body {
+  background-color: $lighttan;
+}
+
+.main-app {
+  height: 100vh;
+}
+
+.main-layout {
+  background-color: $lighttan;
+  overflow: hidden;
+  // min-height: 100vh;
+  @media only screen and (max-width: 705px) {
+    overflow: scroll;
+    min-height: 100%;
+  }
+}
+
+.content {
+  background-color: $lighttan;
+  overflow: scroll;
+  min-height: 100vh;
+
+  @media only screen and (max-width: 705px) {
+    overflow: scroll;
+    height: 100%;
+  }
+}
+
+.btn.active:focus {
+  outline: none;
+  border: none;
+}

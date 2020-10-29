@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { useState } from 'react';
 import { addTrailItem } from '../../actions';
 import FieldFileInput from './FieldFileInput';
 import './volunteerinputform.scss';
@@ -9,15 +10,7 @@ import './volunteerinputform.scss';
 const required = (value) => (value ? undefined : 'Required');
 
 class VolunteerInputForm extends React.Component {
-  renderInput({
-    input,
-    type,
-    label,
-    name,
-    placeholder,
-    hideMe,
-    meta: { touched, error, warning },
-  }) {
+  renderInput({ input, type, label, name, placeholder, hideMe }) {
     return (
       <div className='form-group row'>
         <label htmlFor={name} className='col-sm-4 col-form-label text-sm-right'>
@@ -31,21 +24,13 @@ class VolunteerInputForm extends React.Component {
             id={name}
             placeholder={placeholder}
           ></input>
-          <div className='error'>
-            {touched &&
-              ((error && <span>{error}</span>) ||
-                (warning && <span>{warning}</span>))}
-          </div>
         </div>
       </div>
     );
   }
   renderSelectField = (field) => {
-    const className = `form-group row ${
-      field.meta.touched && field.meta.error ? 'has-error' : ''
-    }`;
     return (
-      <div className={className}>
+      <div className='form-group row'>
         <label
           htmlFor='local_chapter'
           className='col-sm-4 col-form-label text-sm-right'
@@ -63,9 +48,6 @@ class VolunteerInputForm extends React.Component {
           >
             {field.children}
           </select>
-          <div className='error'>
-            {field.meta.touched ? field.meta.error : ''}
-          </div>
         </div>
       </div>
     );
@@ -135,7 +117,6 @@ class VolunteerInputForm extends React.Component {
               label='Reporting Person:'
               placeholder=' Name of Reporting Person'
               validate={[required]}
-              onChange={this.handelSubmit}
             />
             <Field
               type='date'
@@ -171,7 +152,6 @@ class VolunteerInputForm extends React.Component {
               component={this.renderInput}
               label='Trail Entrance:'
               placeholder='Trail head to enter at'
-              validate={[required]}
             />
             <Field
               type='text'
@@ -197,7 +177,11 @@ class VolunteerInputForm extends React.Component {
 
             <div className='form-group row'>
               <div className='col-sm-7 offset-sm-5'>
-                <button type='submit' className='btn btn-primary'>
+                <button
+                  type='submit'
+                  className='btn btn-primary'
+                  // disabled={submitting}
+                >
                   Submit
                 </button>
               </div>

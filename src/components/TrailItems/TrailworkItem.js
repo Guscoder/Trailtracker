@@ -10,18 +10,14 @@ const TrailworkItem = ({ trailItem }) => {
   return (
     <div className='trailworkitem-card col-md-7 card mt-3 mb-5 p-2'>
       <div className='card-body d-flex flex-column justify-content-center'>
-        <h2 className='card-title center'>
-          Trailhead: {trailItem.trailhead_entrance}
-        </h2>
-        <p className='card-text center'>
-          The problem on this trail is the relatively steep incline of 38
-          degrees. Plus there is a large boulder that has completely clocked the
-          trail aout five miles in.
-        </p>
+        <h2 className='card-title text-center'>Trailhead: </h2>
+        <p className='card-text text-center'>{trailItem.trailhead_entrance}</p>
+        <h4 className='card-title text-center'>Description: </h4>
+        <p className='card-text text-center'>{trailItem.description}</p>
         {trailItem.trailItemPhoto ? (
           <img
             className='card-img-top trailitem-card-image mx-auto'
-            alt='No photo provided'
+            alt='None provided'
             src={trailItem.trailItemPhoto}
           />
         ) : (
@@ -31,7 +27,7 @@ const TrailworkItem = ({ trailItem }) => {
       <table className='table table-hover'>
         <tbody className='w-100'>
           <tr>
-            <th scope='row'>Date Found</th>
+            <th scope='row'>NCT Chapter</th>
             <td>{trailItem.local_chapter}</td>
           </tr>
           <tr>
@@ -45,8 +41,12 @@ const TrailworkItem = ({ trailItem }) => {
           <tr>
             <th scope='row'>GPS Location</th>
             <td>
-              {trailItem.gps_latitude} {trailItem.gps_longitude}
+              {trailItem.gps_latitude}, {trailItem.gps_longitude}
             </td>
+          </tr>
+          <tr>
+            <th scope='row'>Mile Marker</th>
+            <td>{trailItem.mile_marker}</td>
           </tr>
           <tr>
             <th scope='row'>Trail Head Entrance</th>

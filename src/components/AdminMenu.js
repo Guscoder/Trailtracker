@@ -8,7 +8,6 @@ class AdminMenu extends Component {
   handleClick = (e) => {
     if (e.target.classList.contains('dropdown-toggle')) {
       console.log('my target');
-      // if clicked inside menu do something
     } else {
       // If clicked outside menu, close the navbar.
       this.node.classList.remove('show');

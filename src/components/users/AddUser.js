@@ -29,6 +29,7 @@ const ROLES = {
 
 const INITIAL_STATE = {
   username: '',
+  phone: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -47,6 +48,7 @@ class SignUpFormBase extends Component {
   onSubmit = (event) => {
     const {
       username,
+      phone,
       email,
       passwordOne,
       isAdmin,
@@ -74,6 +76,7 @@ class SignUpFormBase extends Component {
         console.log(role);
         databaseRef.child('users').child(authUser.user.uid).set({
           username,
+          phone,
           email,
           role,
         });
@@ -105,6 +108,7 @@ class SignUpFormBase extends Component {
   render() {
     const {
       username,
+      phone,
       email,
       passwordOne,
       passwordTwo,
@@ -119,6 +123,7 @@ class SignUpFormBase extends Component {
       passwordOne === '' ||
       email === '' ||
       username === '' ||
+      String(phone).length > 10 ||
       (isAdmin && isMaintainer && isSawyer) ||
       (!isAdmin && !isMaintainer && !isSawyer) ||
       (isAdmin && isMaintainer) ||
@@ -164,6 +169,24 @@ class SignUpFormBase extends Component {
         </div>
         <div className='form-group row'>
           <label
+            htmlFor='phone'
+            className='col-md-3 col-form-label text-md-right'
+          >
+            Phone
+          </label>
+          <div className='col-md-6'>
+            <input
+              name='phone'
+              value={phone}
+              onChange={this.onChange}
+              type='tel'
+              placeholder='Phone Number (optional)'
+              className='form-control'
+            />
+          </div>
+        </div>
+        <div className='form-group row'>
+          <label
             htmlFor='passwordOne'
             className='text-md-right col-md-3 col-form-label'
           >
@@ -186,7 +209,7 @@ class SignUpFormBase extends Component {
             htmlFor='passwordTwo'
             className='text-md-right col-md-3 col-form-label'
           >
-            Full Name
+            Confirm Password
           </label>
           <div className='col-md-6'>
             <input
@@ -218,19 +241,6 @@ class SignUpFormBase extends Component {
             </div>
             <div className='d-xs-block pl-3'>
               <input
-                name='isMaintainer'
-                type='checkbox'
-                className='form-check-input pl-5'
-                id='maintainer'
-                // checked={isMaintainer}
-                onChange={this.onChangeCheckbox}
-              />
-              <label className='form-check-label' htmlFor='maintainer'>
-                Trail Maintainer
-              </label>
-            </div>
-            <div className='d-xs-block pl-3'>
-              <input
                 name='isSawyer'
                 type='checkbox'
                 className='form-check-input pl-5'
@@ -240,6 +250,19 @@ class SignUpFormBase extends Component {
               />
               <label className='form-check-label' htmlFor='sawyer'>
                 Sawyer
+              </label>
+            </div>
+            <div className='d-xs-block pl-3'>
+              <input
+                name='isMaintainer'
+                type='checkbox'
+                className='form-check-input pl-5'
+                id='maintainer'
+                // checked={isMaintainer}
+                onChange={this.onChangeCheckbox}
+              />
+              <label className='form-check-label' htmlFor='maintainer'>
+                Trail Maintainer
               </label>
             </div>
           </div>

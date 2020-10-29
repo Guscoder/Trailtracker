@@ -11,5 +11,9 @@
 
   table {
     color: $darkblue;
+
+    th {
+      font-weight: bold;
+    }
   }
 }

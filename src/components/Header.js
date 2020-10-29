@@ -49,13 +49,6 @@ class Header extends React.Component {
             </button>
             <span className='sr-only'>(current)</span>
           </li>
-          {/* 
-          <li className='nav-item active'>
-            <Link className='nav-link' to='/optionspanel'>
-              Admin
-            </Link>
-            <span className='sr-only'>(current)</span>
-          </li> */}
         </>
       );
     } else {
@@ -86,7 +79,7 @@ class Header extends React.Component {
             />
           </a>
           <h1 className='title-header'>
-            <Link to='/'>Trail Tracker</Link>
+            <Link to='/homepage'>Trail Tracker</Link>
           </h1>
 
           <div className='nav-links justify-content-end'>

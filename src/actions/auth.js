@@ -24,12 +24,6 @@ const receiveLogin = (user) => {
   };
 };
 
-// const loginError = () => {
-//   return {
-//     type: LOGIN_FAILURE,
-//   };
-// };
-
 const requestLogout = () => {
   return {
     type: LOGOUT_REQUEST,
@@ -131,7 +125,6 @@ export const logoutUser = () => (dispatch) => {
       dispatch(receiveLogout());
     })
     .catch((error) => {
-      //Do something with the error if you want!
       dispatch(logoutError());
     });
 };
@@ -143,22 +136,6 @@ export const verifyAuth = () => (dispatch) => {
     if (user !== null) {
       dispatch(receiveLogin(user));
       getUserRole(user);
-      // let myUserId = auth.currentUser.uid;
-      // databaseRef
-      //   .child('users')
-      //   .orderByKey()
-      //   .equalTo(myUserId)
-      //   .on('value', function (snapshot) {
-      //     if (snapshot.val()) {
-      //       let userData = snapshot.val()[myUserId];
-      //       let userRole = userData['role'];
-      //       console.log(userData);
-      //       console.log(userRole);
-      //       dispatch(setCurrentUserRole(userRole));
-      //     } else {
-      //       alert('Error finding user in database!');
-      //     }
-      //   });
       console.log('user not null');
     }
     console.log('verifying success');

@@ -5,8 +5,18 @@ import { addTrailItem } from '../../actions';
 import FieldFileInput from './FieldFileInput';
 import './trailinputform.scss';
 
+const required = (value) => (value ? undefined : 'Required');
+
 class TrailInputForm extends React.Component {
-  renderInput({ input, type, label, name, placeholder, hideMe }) {
+  renderInput({
+    input,
+    type,
+    label,
+    name,
+    placeholder,
+    hideMe,
+    meta: { touched, error, warning },
+  }) {
     return (
       <div className='form-group row'>
         <label htmlFor={name} className='col-sm-4 col-form-label text-sm-right'>
@@ -19,16 +29,22 @@ class TrailInputForm extends React.Component {
             className={`form-control ${hideMe}`}
             id={name}
             placeholder={placeholder}
-            // defaultValue
           ></input>
+          <div className='error'>
+            {touched &&
+              ((error && <span>{error}</span>) ||
+                (warning && <span>{warning}</span>))}
+          </div>
         </div>
       </div>
     );
   }
   renderSelectField = (field) => {
-    // console.log(field.input.value);
+    const className = `form-group row ${
+      field.meta.touched && field.meta.error ? 'has-error' : ''
+    }`;
     return (
-      <div className='form-group row'>
+      <div className={className}>
         <label
           htmlFor='local_chapter'
           className='col-sm-4 col-form-label text-sm-right'
@@ -46,13 +62,15 @@ class TrailInputForm extends React.Component {
           >
             {field.children}
           </select>
+          <div className='error'>
+            {field.meta.touched ? field.meta.error : ''}
+          </div>
         </div>
       </div>
     );
   };
 
   onSubmit = (formValues) => {
-    // console.log(formValues);
     this.props.addTrailItem(formValues);
     this.props.history.push(`/optionspanel`);
   };
@@ -72,6 +90,7 @@ class TrailInputForm extends React.Component {
               name='local_chapter'
               component={this.renderSelectField}
               label='Local Chapter:'
+              validate={[required]}
             >
               <optgroup>
                 <option value=''>Choose Local Chapter</option>
@@ -113,12 +132,14 @@ class TrailInputForm extends React.Component {
               name='reporting_person'
               component={this.renderInput}
               label='Reporting Person:'
+              validate={[required]}
               placeholder=' Name of Reporting Person'
             />
             <Field
               type='date'
               name='date_found'
               component={this.renderInput}
+              validate={[required]}
               label='Date Found:'
             />
             <Field
@@ -137,10 +158,18 @@ class TrailInputForm extends React.Component {
             />
             <Field
               type='text'
+              name='mile_marker'
+              component={this.renderInput}
+              label='Mile Marker:'
+              placeholder='Mile Marker #'
+            />
+            <Field
+              type='text'
               name='trailhead_entrance'
               component={this.renderInput}
               label='Trail Entrance:'
               placeholder='Trail head to enter at'
+              validate={[required]}
             />
             <Field
               type='text'
