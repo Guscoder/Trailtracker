@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react';
-import { useTable, useSortBy } from 'react-table';
-import { connect } from 'react-redux';
-import * as actions from '../actions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect } from "react";
+import { useTable, useSortBy } from "react-table";
+import { connect } from "react-redux";
+import * as actions from "../actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
-import ViewButton from './buttons/ViewButton';
-import EditButton from './buttons/EditButton';
-import DeleteButton from './buttons/DeleteButton';
-import './tablelist.scss';
+import ViewButton from "./buttons/ViewButton";
+import EditButton from "./buttons/EditButton";
+import DeleteButton from "./buttons/DeleteButton";
+import "./tablelist.scss";
 
 function renderListTitle(listStatus) {
   switch (listStatus) {
-    case 'completeditems':
-      return 'Completed Items';
-    case 'activeitems':
-      return 'Active Items';
-    case 'submitteditems':
-      return 'Submitted Items for Approval';
+    case "completeditems":
+      return "Completed Items";
+    case "activeitems":
+      return "Active Items";
+    case "submitteditems":
+      return "Submitted Items for Approval";
     default:
-      return 'Item List';
+      return "Item List";
   }
 }
 
@@ -30,10 +30,14 @@ function Table({ columns, data, listHeader }) {
     headerGroups,
     rows,
     prepareRow,
+    setHiddenColumns,
   } = useTable(
     {
       columns,
       data,
+      initialState: {
+        hiddenColumns: [],
+      },
     },
     useSortBy
   );
@@ -64,7 +68,7 @@ function Table({ columns, data, listHeader }) {
                   // Add the sorting props to control sorting. For this example
                   // we can add them into the header props
                   <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
+                    {column.render("Header")}
                     {/* Add a sort direction indicator */}
                     <span>
                       {column.isSorted ? (
@@ -74,7 +78,7 @@ function Table({ columns, data, listHeader }) {
                           <FontAwesomeIcon icon={faCaretUp} />
                         )
                       ) : column.hideSortCaret ? (
-                        ''
+                        ""
                       ) : (
                         <FontAwesomeIcon icon={faCaretDown} />
                       )}
@@ -92,7 +96,7 @@ function Table({ columns, data, listHeader }) {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
               </tr>
@@ -117,39 +121,44 @@ function TableList(props) {
   const columns = React.useMemo(
     (listStatus) => [
       {
-        Header: ' ',
+        Header: " ",
         hideHeader: true,
         columns: [
           {
-            Header: 'Date Found ',
-            accessor: 'date_found',
+            Header: "Date Found ",
+            accessor: "date_found",
             sortMethod: (a, b) => Number(a) - Number(b),
           },
           {
-            Header: 'Reported By ',
-            accessor: 'reporting_person',
+            Header: "Completed ",
+            accessor: "date_resolved",
+            sortMethod: (a, b) => Number(a) - Number(b),
           },
           {
-            Header: 'Trailhead ',
-            accessor: 'trailhead_entrance',
+            Header: "Reported By ",
+            accessor: "reporting_person",
           },
           {
-            Header: 'Mile Marker ',
-            accessor: 'mile_marker',
+            Header: "Trailhead ",
+            accessor: "trailhead_entrance",
           },
           {
-            Header: 'Chapter ',
-            accessor: 'local_chapter',
+            Header: "Mile Marker ",
+            accessor: "mile_marker",
           },
           {
-            Header: 'View',
+            Header: "Chapter ",
+            accessor: "local_chapter",
+          },
+          {
+            Header: "View",
             hideSortCaret: true,
             Cell: (cellInfo) => {
               return <ViewButton trailId={cellInfo.row.original.trailItemId} />;
             },
           },
           {
-            Header: 'Edit',
+            Header: "Edit",
             hideSortCaret: true,
             Cell: (cellInfo) => {
               return (
@@ -161,7 +170,7 @@ function TableList(props) {
             },
           },
           {
-            Header: 'Delete',
+            Header: "Delete",
             hideSortCaret: true,
             Cell: (cellInfo) => {
               return (
@@ -179,13 +188,18 @@ function TableList(props) {
     []
   );
 
-  if (!props.trailItems) return 'Loading';
+  if (!props.trailItems) return "Loading";
 
   return (
     <Table
       columns={columns}
       data={data}
       listHeader={props.match.params.listStatus}
+      setHiddenColumns={(oldHiddenColumns) => {
+        if (props.match.params.listStatus !== "completeditems") {
+          return [];
+        }
+      }}
     />
   );
 }

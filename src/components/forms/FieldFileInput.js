@@ -1,30 +1,37 @@
-import React, { Component } from 'react';
-import PreviewPicture from './PreviewPicture';
+import React, { Component } from "react";
+import PreviewPicture from "./PreviewPicture";
 
 class FieldFileInput extends Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
     this.state = {
       picture: null,
       pictureUrl: null,
     };
   }
 
-  displayPicture(event) {
-    let reader = new FileReader();
-    let file = event.target.files[0];
-    //.onload not working below
-    reader.onload = (event) => {
-      this.setState({
-        picture: file,
-        pictureUrl: reader.result,
-      });
-      reader.readAsDataURL(file);
-    };
+  // displayPicture(event) {
+  //   let reader = new FileReader();
+  //   let file = event.target.files[0];
+  //   //.onload not working below
+  //   reader.onload = (event) => {
+  //     this.setState({
+  //       picture: file,
+  //       pictureUrl: reader.result,
+  //     });
+  //     reader.readAsDataURL(file);
+  //   };
+  // }
+  onChange(e) {
+    const {
+      input: { onChange },
+    } = this.props;
+    onChange(e.target.files[0]);
   }
 
   render() {
     const { label, input } = this.props;
+    console.log(input.value);
     delete input.value;
     return (
       <div>

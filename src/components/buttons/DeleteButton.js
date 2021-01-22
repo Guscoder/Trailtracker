@@ -1,39 +1,41 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { storageRef, database } from '../../services/firebaseConfig';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { storageRef, database } from "../../services/firebaseConfig";
 
 class DeleteButton extends React.Component {
   deleteItem = (trailId, trailPhotoId, itemStatus) => {
     this.props.updateTrailItem(itemStatus);
-    console.log('delete item status:' + itemStatus);
+    console.log("delete item status:" + itemStatus);
+
+    database
+      .ref(`/${itemStatus}items/` + trailId)
+      .remove()
+      .then(function () {
+        console.log("Remove active succeeded.");
+      })
+      .then(() => {
+        alert("Item Deleted!");
+      })
+      .catch(function (error) {
+        alert("Error removing item!");
+      });
     if (trailPhotoId) {
       const photoRef = storageRef.child(`trailphotos/${trailId}`);
       photoRef
         .delete()
         .then(function () {
-          console.log('Photo removal succeeded.');
+          console.log("Photo removal succeeded.");
         })
         .catch(function (error) {
-          alert('Error removing photo!');
-          console.log('Error removing photo!');
+          alert("Error removing photo!");
+          console.log("Error removing photo!");
         });
     }
-    database
-      .ref(`/${itemStatus}items/` + trailId)
-      .remove()
-      .then(function () {
-        console.log('Remove active succeeded.');
-      })
-      .then(() => {
-        alert('Item Deleted!');
-      })
-      .catch(function (error) {
-        alert('Error removing item!');
-      });
+
     this.props.history.push(`/tablelist/${itemStatus}items`);
     // database
     //   .ref(`/${itemStatus}items/` + trailId)
