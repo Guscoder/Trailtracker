@@ -10,20 +10,7 @@ import EditButton from "./buttons/EditButton";
 import DeleteButton from "./buttons/DeleteButton";
 import "./tablelist.scss";
 
-function renderListTitle(listStatus) {
-  switch (listStatus) {
-    case "completeditems":
-      return "Completed Items";
-    case "activeitems":
-      return "Active Items";
-    case "submitteditems":
-      return "Submitted Items for Approval";
-    default:
-      return "Item List";
-  }
-}
-
-function Table({ columns, data, listHeader }) {
+function Table({ columns, data }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -50,8 +37,8 @@ function Table({ columns, data, listHeader }) {
       >
         <thead className='trailworklist-table-head'>
           <tr className='table-title text-center'>
-            <td colSpan='8'>
-              <h1>{renderListTitle(listHeader)}</h1>
+            <td colSpan='9'>
+              <h1>Completed Items</h1>
             </td>
           </tr>
           {headerGroups.map((headerGroup) => (
@@ -108,14 +95,13 @@ function Table({ columns, data, listHeader }) {
 
 function TableList(props) {
   useEffect(() => {
-    const { listStatus } = props.match.params;
-    props.fetchTrailItems(listStatus);
+    props.fetchTrailItems("completeditems");
   }, []);
 
   const data = props.trailItems;
   console.log(data);
   const columns = React.useMemo(
-    (listStatus) => [
+    () => [
       {
         Header: " ",
         hideHeader: true,
@@ -123,6 +109,11 @@ function TableList(props) {
           {
             Header: "Date Found ",
             accessor: "date_found",
+            sortMethod: (a, b) => Number(a) - Number(b),
+          },
+          {
+            Header: "Completed ",
+            accessor: "date_resolved",
             sortMethod: (a, b) => Number(a) - Number(b),
           },
           {
@@ -185,7 +176,7 @@ function TableList(props) {
     <Table
       columns={columns}
       data={data}
-      listHeader={props.match.params.listStatus}
+      //   listHeader={props.match.params.listStatus}
     />
   );
 }

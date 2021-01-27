@@ -1,20 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Layout from './Layout';
-import TrailInputForm from './forms/TrailInputForm';
-import VolunteerInputForm from './forms/VolunteerInputForm';
-import TableList from './TableList';
-import HomePage from './HomePage';
-import Login from './Login';
-import Home from './Home';
-import ViewTrailItem from './ViewTrailItem';
-import EditableTrailItem from './forms/EditableTrailItem';
-import AddUser from './users/AddUser';
-import UserList from './users/UserList';
+import React from "react";
+import { connect } from "react-redux";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import Layout from "./Layout";
+import TrailInputForm from "./forms/TrailInputForm";
+import VolunteerInputForm from "./forms/VolunteerInputForm";
+import TableList from "./TableList";
+import TableComplete from "./TableComplete";
+import NewItemPreview from "./NewItemPreview";
 
-import '../styles/config-styles.scss';
-import './app.scss';
+import HomePage from "./HomePage";
+import Login from "./Login";
+import Home from "./Home";
+import ViewTrailItem from "./ViewTrailItem";
+import EditableTrailItem from "./forms/EditableTrailItem";
+import AddUser from "./users/AddUser";
+import UserList from "./users/UserList";
+
+import "../styles/config-styles.scss";
+import "./app.scss";
 
 function App(props) {
   const { isAuthenticated, currentUserRole } = props;
@@ -28,7 +31,7 @@ function App(props) {
             <Route exact path='/homepage' component={HomePage} />
 
             {isAuthenticated &&
-            (currentUserRole === 'ADMIN' || currentUserRole === 'SAWYER') ? (
+            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
               <Route
                 path='/TableList/:listStatus'
                 render={(props) => <TableList key={Date.now()} {...props} />}
@@ -38,39 +41,61 @@ function App(props) {
             )}
 
             {isAuthenticated &&
-            (currentUserRole === 'ADMIN' || currentUserRole === 'SAWYER') ? (
-              <Route path='/trailinputform' exact component={TrailInputForm} />
+            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
+              <Route
+                path='/TableComplete'
+                render={(props) => (
+                  <TableComplete key={Date.now()} {...props} />
+                )}
+              />
             ) : (
               <Redirect to='/login' />
             )}
 
             {isAuthenticated &&
-            (currentUserRole === 'ADMIN' || currentUserRole === 'SAWYER') ? (
+            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
+              <Route path='/trailinputform' exact component={TrailInputForm} />
+            ) : (
+              <Redirect to='/login' />
+            )}
+            {isAuthenticated &&
+            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
+              <Route
+                path='/newitempreview'
+                exact
+                render={(props) => <NewItemPreview {...props} />}
+              />
+            ) : (
+              <Redirect to='/login' />
+            )}
+
+            {isAuthenticated &&
+            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
               <Route path='/TrailworkItem' component={ViewTrailItem} />
             ) : (
               <Redirect to='/login' />
             )}
 
             {isAuthenticated &&
-            (currentUserRole === 'ADMIN' || currentUserRole === 'SAWYER') ? (
+            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
               <Route path='/EditableTrailItem' component={EditableTrailItem} />
             ) : (
               <Redirect to='/login' />
             )}
 
-            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+            {isAuthenticated && currentUserRole === "ADMIN" ? (
               <Route path='/users/userlist' component={UserList} />
             ) : (
               <Redirect to='/login' />
             )}
 
-            {isAuthenticated && currentUserRole === 'ADMIN' ? (
+            {isAuthenticated && currentUserRole === "ADMIN" ? (
               <Route path='/users/adduser' exact component={AddUser} />
             ) : (
               <Redirect to='/login' />
             )}
 
-            {isAuthenticated && currentUserRole === 'MAINTAINER' ? (
+            {isAuthenticated && currentUserRole === "MAINTAINER" ? (
               <Route
                 exact
                 path='/volunteerinputform'

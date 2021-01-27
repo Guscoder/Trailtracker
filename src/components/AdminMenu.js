@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import OptionsButton from './buttons/OptionsButton';
-import '../styles/config-styles.scss';
-import './adminmenu.scss';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import OptionsButton from "./buttons/OptionsButton";
+import "../styles/config-styles.scss";
+import "./adminmenu.scss";
 
 class AdminMenu extends Component {
   handleClick = (e) => {
-    if (e.target.classList.contains('dropdown-toggle')) {
-      console.log('my target');
+    if (e.target.classList.contains("dropdown-toggle")) {
+      console.log("my target");
     } else {
       // If clicked outside menu, close the navbar.
-      this.node.classList.remove('show');
+      this.node.classList.remove("show");
     }
   };
 
   componentDidMount() {
-    document.addEventListener('click', this.handleClick, false);
+    document.addEventListener("click", this.handleClick, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClick, false);
+    document.removeEventListener("click", this.handleClick, false);
   }
 
   render() {
@@ -45,7 +45,7 @@ class AdminMenu extends Component {
           <ul className='navbar-nav'>
             <li className='nav-item active'>
               <Link to='/trailinputform' className='nav-link'>
-                <OptionsButton buttonText={'Add New Item'} />
+                <OptionsButton buttonText={"Add New Item"} />
                 <span className='sr-only'>(current)</span>
               </Link>
             </li>
@@ -67,13 +67,13 @@ class AdminMenu extends Component {
                 aria-labelledby='navbarDropdownMenuLink'
               >
                 <Link to='/tablelist/activeitems' className='dropdown-item'>
-                  <OptionsButton buttonText={'Active Items'} />
+                  <OptionsButton buttonText={"Active Items"} />
                 </Link>
-                <Link to='/tablelist/completeditems' className='dropdown-item'>
-                  <OptionsButton buttonText={'Completed Items'} />
+                <Link to='/tablecomplete' className='dropdown-item'>
+                  <OptionsButton buttonText={"Completed Items"} />
                 </Link>
                 <Link to='/tablelist/submitteditems' className='dropdown-item'>
-                  <OptionsButton buttonText={'New Submissions'} />
+                  <OptionsButton buttonText={"New Submissions"} />
                 </Link>
               </div>
             </li>
@@ -94,10 +94,10 @@ class AdminMenu extends Component {
                 aria-labelledby='navbarDropdownMenuLink'
               >
                 <Link to='/users/adduser' className='dropdown-item'>
-                  <OptionsButton buttonText={'Add User'} />
+                  <OptionsButton buttonText={"Add User"} />
                 </Link>
                 <Link to='/users/userlist' className='dropdown-item'>
-                  <OptionsButton buttonText={'Edit/Delete User'} />
+                  <OptionsButton buttonText={"Edit/Delete User"} />
                 </Link>
               </div>
             </li>

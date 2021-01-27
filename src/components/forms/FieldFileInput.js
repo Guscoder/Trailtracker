@@ -22,12 +22,23 @@ class FieldFileInput extends Component {
   //     reader.readAsDataURL(file);
   //   };
   // }
-  onChange(e) {
-    const {
-      input: { onChange },
-    } = this.props;
-    onChange(e.target.files[0]);
-  }
+
+  // onChange(e) {
+  //   const {
+  //     input: { onChange },
+  //   } = this.props;
+  //   onChange(e.target.files[0]);
+  // }
+
+  onImageChange = (event) => {
+    console.log(event.target.files[0]);
+    if (event.target.files && event.target.files[0]) {
+      this.setState({
+        image: URL.createObjectURL(event.target.files[0]),
+      });
+      console.log(this.state.image);
+    }
+  };
 
   render() {
     const { label, input } = this.props;
@@ -44,13 +55,14 @@ class FieldFileInput extends Component {
               type='file'
               className='form-control-file'
               {...input}
-              onChange={(event) => {
-                this.displayPicture(event);
-              }}
+              onChange={this.onImageChange}
+              // onChange={(event) => {
+              //   this.displayPicture(event);
+              // }}
             ></input>
+            <PreviewPicture pictureUrl={this.state.image} />
           </div>
         </div>
-        <PreviewPicture pictureUrl={this.state.pictureUrl} />
       </div>
     );
   }

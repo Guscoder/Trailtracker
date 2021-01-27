@@ -1,11 +1,13 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { addTrailItem } from '../../actions';
-import FieldFileInput from './FieldFileInput';
-import './trailinputform.scss';
+import React from "react";
+import { Field, getFormValues, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-const required = (value) => (value ? undefined : 'Required');
+import { addTrailItem } from "../../actions";
+import FieldFileInput from "./FieldFileInput";
+import "./trailinputform.scss";
+
+const required = (value) => (value ? undefined : "Required");
 
 class TrailInputForm extends React.Component {
   renderInput({
@@ -41,7 +43,7 @@ class TrailInputForm extends React.Component {
   }
   renderSelectField = (field) => {
     const className = `form-group row ${
-      field.meta.touched && field.meta.error ? 'has-error' : ''
+      field.meta.touched && field.meta.error ? "has-error" : ""
     }`;
     return (
       <div className={className}>
@@ -63,7 +65,7 @@ class TrailInputForm extends React.Component {
             {field.children}
           </select>
           <div className='error'>
-            {field.meta.touched ? field.meta.error : ''}
+            {field.meta.touched ? field.meta.error : ""}
           </div>
         </div>
       </div>
@@ -71,6 +73,7 @@ class TrailInputForm extends React.Component {
   };
 
   onSubmit = (formValues) => {
+    console.log(formValues);
     this.props.addTrailItem(formValues);
     this.props.history.push(`/optionspanel`);
   };
@@ -214,7 +217,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const formWrapped = reduxForm({
-  form: 'trailIssueForm',
+  form: "trailIssueForm",
 })(TrailInputForm);
 
 export default connect(mapDispatchToProps, { addTrailItem })(formWrapped);
