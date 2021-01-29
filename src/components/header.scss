@@ -1,12 +1,12 @@
-@import '../styles/config-styles.scss';
+@import "../styles/config-styles.scss";
 
 .navbar {
-  position: fixed !important;
+  // position: fixed !important;
   top: 0;
   width: 100%;
   height: auto;
   background-color: $darkblue;
-  font-family: 'Sanchez';
+  font-family: "Sanchez";
   color: $lighttan;
   z-index: 99;
 

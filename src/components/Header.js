@@ -1,23 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { logoutUser } from '../actions';
-import { withRouter } from 'react-router-dom';
-import './header.scss';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { logoutUser } from "../actions";
+import { withRouter } from "react-router-dom";
+import "./header.scss";
 
 class Header extends React.Component {
   componentDidMount() {
-    console.log('header mounted');
+    console.log("header mounted");
   }
   handleLogout = () => {
     const { dispatch } = this.props;
     dispatch(logoutUser());
-    this.props.history.push('/');
+    this.props.history.push("/");
     console.log(this.props.isAuthenticated);
   };
 
   handleLogin = () => {
-    this.props.history.push('/login');
+    this.props.history.push("/login");
   };
 
   LoginButton = () => {
@@ -66,14 +66,14 @@ class Header extends React.Component {
   render() {
     return (
       <>
-        <nav className='navbar d-flex'>
+        <nav className='navbar fixed-top d-flex'>
           <a
             className='navbar-brand'
             target='_blank '
             href='https://northcountrytrail.org/'
           >
             <img
-              src={require('../assets/images/nctLogo.jpeg')}
+              src={require("../assets/images/nctLogo.jpeg")}
               alt='north country trail logo'
               className='nct-logo'
             />

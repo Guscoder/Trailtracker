@@ -7,7 +7,6 @@ import "./adminmenu.scss";
 class AdminMenu extends Component {
   handleClick = (e) => {
     if (e.target.classList.contains("dropdown-toggle")) {
-      console.log("my target");
     } else {
       // If clicked outside menu, close the navbar.
       this.node.classList.remove("show");
@@ -24,7 +23,7 @@ class AdminMenu extends Component {
 
   render() {
     return (
-      <nav className='navbar admin-menu navbar-expand-md navbar-dark'>
+      <nav className='navbar fixed-top admin-menu navbar-expand-md navbar-dark'>
         <button
           className='navbar-toggler'
           type='button'

@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { useTable, useSortBy } from 'react-table';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect } from "react";
+import { useTable, useSortBy } from "react-table";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
-import EditUserButton from '../buttons/EditUserButton';
-import DeleteUserButton from '../buttons/DeleteUserButton';
-import '../tablelist.scss';
+import EditUserButton from "../buttons/EditUserButton";
+import DeleteUserButton from "../buttons/DeleteUserButton";
+import "../tablelist.scss";
 function addDashes(f) {
-  let phoneNum = f.slice(0, 3) + '-' + f.slice(3, 6) + '-' + f.slice(6);
+  let phoneNum = f.slice(0, 3) + "-" + f.slice(3, 6) + "-" + f.slice(6);
   return phoneNum;
 }
 
@@ -52,7 +52,7 @@ function Table({ columns, data }) {
                   // Add the sorting props to control sorting. For this example
                   // we can add them into the header props
                   <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
+                    {column.render("Header")}
                     {/* Add a sort direction indicator */}
                     <span>
                       {column.isSorted ? (
@@ -62,7 +62,7 @@ function Table({ columns, data }) {
                           <FontAwesomeIcon icon={faCaretUp} />
                         )
                       ) : column.hideSortCaret ? (
-                        ''
+                        ""
                       ) : (
                         <FontAwesomeIcon icon={faCaretDown} />
                       )}
@@ -80,7 +80,7 @@ function Table({ columns, data }) {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
               </tr>
@@ -106,35 +106,30 @@ function UserList(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: ' ',
+        Header: " ",
         hideHeader: true,
         columns: [
           {
-            Header: 'Name ',
-            accessor: 'username',
+            Header: "Name ",
+            accessor: "username",
           },
           {
-            Header: 'Email ',
-            accessor: 'email',
+            Header: "Email ",
+            accessor: "email",
           },
           {
-            Header: 'Phone ',
-            accessor: 'phone',
+            Header: "Phone ",
+            accessor: "phone",
             Cell: (cellInfo) => {
               console.log(cellInfo.row.original.phone);
               return cellInfo.row.original.phone
                 ? addDashes(cellInfo.row.original.phone)
-                : '';
-              // if (cellInfo.row.original.phone) {
-              //   return addDashes(cellInfo.row.original.phone);
-              // } else {
-              //   return '';
-              // }
+                : "";
             },
           },
           {
-            Header: 'Role ',
-            accessor: 'role',
+            Header: "Role ",
+            accessor: "role",
           },
           // {
           //   Header: 'Edit',
@@ -149,7 +144,7 @@ function UserList(props) {
           //   },
           // },
           {
-            Header: 'Delete',
+            Header: "Delete",
             hideSortCaret: true,
             Cell: (cellInfo) => {
               return (
@@ -166,7 +161,7 @@ function UserList(props) {
     []
   );
 
-  if (!props.userList) return 'Loading';
+  if (!props.userList) return "Loading";
 
   return <Table columns={columns} data={userListData} />;
 }
