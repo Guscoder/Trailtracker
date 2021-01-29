@@ -1,4 +1,4 @@
-@import '../../styles/config-styles.scss';
+@import "../../styles/config-styles.scss";
 
 .volunteer-form-container {
   margin-top: $header-height;
@@ -8,15 +8,34 @@
 .input-card {
   background-color: $lightblue !important;
   z-index: 5;
+  .preview-card {
+    position: absolute;
+    background-color: $lightblue;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
   h1 {
     font-size: 3vw;
     font-weight: bold;
   }
 }
 
-button[type='submit'] {
-  background-color: $darktan;
+button[type="submit"] {
+  background-color: $darkblue;
   border: $lighttan solid 2px;
+}
+
+button.preview-button {
+  background-color: $darkblue;
+  border: $lighttan solid 2px;
+}
+
+table {
+  width: 80%;
+  margin: 0 auto;
 }
 
 .error {

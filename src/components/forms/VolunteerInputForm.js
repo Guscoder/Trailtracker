@@ -1,14 +1,35 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { addTrailItem } from '../../actions';
-import FieldFileInput from './FieldFileInput';
-import './volunteerinputform.scss';
+import React from "react";
+import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-const required = (value) => (value ? undefined : 'Required');
+import { addTrailItem } from "../../actions";
+import FieldFileInput from "./FieldFileInput";
+import "./volunteerinputform.scss";
+
+const required = (value) => (value ? undefined : "Required");
+const number = (value) =>
+  value && isNaN(Number(value)) ? "Must be a number" : undefined;
 
 class VolunteerInputForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  handleInputChange = (e, field) => {
+    console.log(e.target.value);
+    this.setState({
+      [field]: e.target.value,
+    });
+  };
+
+  handleOptionChange = (changeEvent) => {
+    console.log("changing radio status: " + changeEvent.target.value);
+    this.setState({
+      selectedOption: changeEvent.target.value,
+    });
+  };
+
   renderInput({
     input,
     type,
@@ -42,7 +63,7 @@ class VolunteerInputForm extends React.Component {
   }
   renderSelectField = (field) => {
     const className = `form-group row ${
-      field.meta.touched && field.meta.error ? 'has-error' : ''
+      field.meta.touched && field.meta.error ? "has-error" : ""
     }`;
     return (
       <div className={className}>
@@ -64,34 +85,147 @@ class VolunteerInputForm extends React.Component {
             {field.children}
           </select>
           <div className='error'>
-            {field.meta.touched ? field.meta.error : ''}
+            {field.meta.touched ? field.meta.error : ""}
           </div>
         </div>
       </div>
     );
   };
-
-  onSubmit = (formValues) => {
-    this.props.addTrailItem(formValues, 'submitted');
-    this.props.history.push(`/volunteerinputform`);
+  displayFormPreview = () => {
+    const element = document.getElementById("preview-card");
+    element.classList.remove("d-none");
+  };
+  removeFormPreview = () => {
+    const element = document.getElementById("preview-card");
+    element.classList.add("d-none");
+  };
+  submitData = (formValues) => {
+    this.props.addTrailItem(formValues);
+    this.props.history.push(`/optionspanel`);
   };
 
   render() {
     return (
-      <main className='container volunteer-form-container p-2'>
+      <main className='container volunteer-form-container pt-3 pb-5'>
         <div className='row d-flex justify-content-center'></div>
-        <div className='input-card card mt-3 p-2'>
+
+        <div className='input-card card p-2'>
+          <div id='preview-card' className='preview-card d-none'>
+            <table className='table table-hover w-75'>
+              <tbody>
+                <tr>
+                  <th colSpan='2'>
+                    <h1 className='text-center'>Trail Item Preview</h1>
+                  </th>
+                </tr>
+
+                <tr className='row '>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Local Chapter:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.localChapter || "MUST INCLUDE CHAPTER NAME!"}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Reporting Person:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.reportingPerson ||
+                      "MUST INCLUDE REPORTING PERSON!"}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Date Found:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.dateFound || "MUST INCLUDE DATE!"}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    GPS Latitude:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.gpsLatitude || ""}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    GPS Longitude:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.gpsLongitude || ""}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Mile Marker:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.mileMarker || ""}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Trail Entrance:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.trailhead ||
+                      "MUST INCLUDE NAME OF TRAIL ENTRANCE!"}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Distance:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.distance || ""}
+                  </td>
+                </tr>
+                <tr className='row'>
+                  <th scope='row' className='col-sm-6 text-sm-right'>
+                    Description:
+                  </th>
+                  <td className='col-sm-6 text-sm-left'>
+                    {this.state.description || ""}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className='row d-flex justify-content-center'>
+              <button
+                onClick={this.removeFormPreview}
+                className='btn btn-primary preview-button m-2'
+              >
+                Back/Edit
+              </button>
+              <label
+                htmlFor='submit-form'
+                tab-index='0'
+                type='submit'
+                onSubmit={this.props.handleSubmit(this.submitData)}
+                className='btn btn-primary m-2'
+              >
+                Submit
+              </label>
+            </div>
+          </div>
           <h1 className='text-center'>Trail Maintenance Item Form</h1>
           <form
-            onSubmit={this.props.handleSubmit(this.onSubmit)}
+            onSubmit={this.props.handleSubmit(this.submitData)}
             className='mt-5'
           >
             <Field
               type='select'
               name='local_chapter'
               component={this.renderSelectField}
-              validate={[required]}
               label='Local Chapter:'
+              validate={[required]}
+              value={this.state.localChapter || ""}
+              onChange={(e) => this.handleInputChange(e, "localChapter")}
             >
               <optgroup>
                 <option value=''>Choose Local Chapter</option>
@@ -126,6 +260,8 @@ class VolunteerInputForm extends React.Component {
               name='trail_image'
               component={FieldFileInput}
               label='Trail Photo:'
+              value={this.state.imageFile || ""}
+              onChange={(e) => this.handleInputChange(e, "imageFile")}
             />
 
             <Field
@@ -133,16 +269,19 @@ class VolunteerInputForm extends React.Component {
               name='reporting_person'
               component={this.renderInput}
               label='Reporting Person:'
-              placeholder=' Name of Reporting Person'
               validate={[required]}
-              onChange={this.handelSubmit}
+              placeholder=' Name of Reporting Person'
+              value={this.state.reportingPerson || ""}
+              onChange={(e) => this.handleInputChange(e, "reportingPerson")}
             />
             <Field
               type='date'
               name='date_found'
               component={this.renderInput}
-              label='Date Found:'
               validate={[required]}
+              label='Date Found:'
+              value={this.state.dateFound || ""}
+              onChange={(e) => this.handleInputChange(e, "dateFound")}
             />
             <Field
               type='number'
@@ -150,6 +289,8 @@ class VolunteerInputForm extends React.Component {
               component={this.renderInput}
               label='GPS Latitude:'
               placeholder='Enter GPS latitude if known'
+              value={this.state.gpsLatitude || ""}
+              onChange={(e) => this.handleInputChange(e, "gpsLatitude")}
             />
             <Field
               type='number'
@@ -157,13 +298,18 @@ class VolunteerInputForm extends React.Component {
               component={this.renderInput}
               label='GPS Longitude:'
               placeholder='Enter GPS latitude if known'
+              value={this.state.gpsLongitude || ""}
+              onChange={(e) => this.handleInputChange(e, "gpsLongitude")}
             />
             <Field
-              type='text'
+              type='number'
               name='mile_marker'
               component={this.renderInput}
               label='Mile Marker:'
               placeholder='Mile Marker #'
+              validate={[number]}
+              value={this.state.mileMarker || ""}
+              onChange={(e) => this.handleInputChange(e, "mileMarker")}
             />
             <Field
               type='text'
@@ -172,6 +318,8 @@ class VolunteerInputForm extends React.Component {
               label='Trail Entrance:'
               placeholder='Trail head to enter at'
               validate={[required]}
+              value={this.state.trailhead || ""}
+              onChange={(e) => this.handleInputChange(e, "trailhead")}
             />
             <Field
               type='text'
@@ -179,6 +327,9 @@ class VolunteerInputForm extends React.Component {
               component={this.renderInput}
               label='Distance:'
               placeholder='Approx distance from trail head'
+              validate={[number]}
+              value={this.state.distance || ""}
+              onChange={(e) => this.handleInputChange(e, "distance")}
             />
             <Field
               type='text'
@@ -186,6 +337,8 @@ class VolunteerInputForm extends React.Component {
               component={this.renderInput}
               label='Description:'
               placeholder='Description of trail issue'
+              value={this.state.description || ""}
+              onChange={(e) => this.handleInputChange(e, "description")}
             />
             <Field
               type='text'
@@ -195,12 +348,22 @@ class VolunteerInputForm extends React.Component {
               hideMe='d-none'
             />
 
-            <div className='form-group row'>
-              <div className='col-sm-7 offset-sm-5'>
-                <button type='submit' className='btn btn-primary'>
-                  Submit
-                </button>
-              </div>
+            <div className='form-group row d-flex justify-content-center'>
+              <button
+                type='button'
+                onClick={this.displayFormPreview}
+                className='btn btn-primary preview-button m-2'
+              >
+                Preview Item Data
+              </button>
+              <button
+                type='submit'
+                // onSubmit={this.submitData}
+                id='submit-form'
+                className='btn btn-primary m-2'
+              >
+                Submit
+              </button>
             </div>
           </form>
         </div>
@@ -208,7 +371,6 @@ class VolunteerInputForm extends React.Component {
     );
   }
 }
-
 const mapDispatchToProps = (dispatch) => {
   return {
     addTrailItem: (formValues, itemStatus) =>
@@ -217,7 +379,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const formWrapped = reduxForm({
-  form: 'volunteerInputForm',
+  form: "volunteerInputForm",
 })(VolunteerInputForm);
 
 export default connect(mapDispatchToProps, { addTrailItem })(

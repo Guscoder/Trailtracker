@@ -10,6 +10,12 @@ import EditButton from "./buttons/EditButton";
 import DeleteButton from "./buttons/DeleteButton";
 import "./tablelist.scss";
 
+function displayFormattedDate(date) {
+  let newDate = date.split("-");
+  let formattedDate = `${newDate[1]}/${newDate[2]}/${newDate[0].slice(2)}`;
+  return formattedDate;
+}
+
 function Table({ columns, data }) {
   const {
     getTableProps,
@@ -110,11 +116,17 @@ function TableList(props) {
             Header: "Date Found ",
             accessor: "date_found",
             sortMethod: (a, b) => Number(a) - Number(b),
+            Cell: (cellInfo) => {
+              return displayFormattedDate(cellInfo.row.original.date_found);
+            },
           },
           {
             Header: "Completed ",
             accessor: "date_resolved",
             sortMethod: (a, b) => Number(a) - Number(b),
+            Cell: (cellInfo) => {
+              return displayFormattedDate(cellInfo.row.original.date_resolved);
+            },
           },
           {
             Header: "Reported By ",

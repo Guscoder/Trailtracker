@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import * as firebase from 'firebase';
-import { connect } from 'react-redux';
-import { addUser } from '../../actions';
-import { databaseRef } from '../../services/firebaseConfig';
-import { withRouter } from 'react-router-dom';
-import './adduser.scss';
+import React, { Component } from "react";
+import * as firebase from "firebase";
+import { connect } from "react-redux";
+import { addUser } from "../../actions";
+import { databaseRef } from "../../services/firebaseConfig";
+import { withRouter } from "react-router-dom";
+import "./adduser.scss";
 
 const fireConfig = {
-  apiKey: 'AIzaSyAWfYB2aX2JVmlJkD8iFm0SLGFFNuxtKio',
-  authDomain: 'trailtracker-1060b.firebaseapp.com',
-  databaseURL: 'https://trailtracker-1060b.firebaseio.com',
+  apiKey: "AIzaSyAWfYB2aX2JVmlJkD8iFm0SLGFFNuxtKio",
+  authDomain: "trailtracker-1060b.firebaseapp.com",
+  databaseURL: "https://trailtracker-1060b.firebaseio.com",
 };
 
-const secondaryApp = firebase.initializeApp(fireConfig, 'SecondaryApp');
+const secondaryApp = firebase.initializeApp(fireConfig, "SecondaryApp");
 
 const AddUser = () => (
   <main className='p-5'>
@@ -22,20 +22,20 @@ const AddUser = () => (
 );
 
 const ROLES = {
-  ADMIN: 'ADMIN',
-  MAINTAINER: 'MAINTAINER',
-  SAWYER: 'SAWYER',
+  ADMIN: "ADMIN",
+  MAINTAINER: "MAINTAINER",
+  SAWYER: "SAWYER",
 };
 
 const INITIAL_STATE = {
-  username: '',
-  phone: '',
-  email: '',
-  passwordOne: '',
-  passwordTwo: '',
-  isAdmin: '',
-  isMaintainer: '',
-  isSawyer: '',
+  username: "",
+  phone: "",
+  email: "",
+  passwordOne: "",
+  passwordTwo: "",
+  isAdmin: "",
+  isMaintainer: "",
+  isSawyer: "",
   error: null,
 };
 
@@ -56,7 +56,7 @@ class SignUpFormBase extends Component {
       isSawyer,
     } = this.state;
 
-    let role = '';
+    let role = "";
 
     if (isAdmin) {
       role = ROLES.ADMIN;
@@ -65,7 +65,7 @@ class SignUpFormBase extends Component {
     } else if (isSawyer) {
       role = ROLES.SAWYER;
     } else {
-      alert('You did not choose a role');
+      alert("You did not choose a role");
     }
 
     secondaryApp
@@ -74,7 +74,7 @@ class SignUpFormBase extends Component {
       .then((authUser) => {
         console.log(authUser);
         console.log(role);
-        databaseRef.child('users').child(authUser.user.uid).set({
+        databaseRef.child("users").child(authUser.user.uid).set({
           username,
           phone,
           email,
@@ -86,8 +86,8 @@ class SignUpFormBase extends Component {
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        console.log('Adding user and props: ' + this.props);
-        this.props.history.push('/users/userlist');
+        console.log("Adding user and props: " + this.props);
+        this.props.history.push("/users/userlist");
       })
       .catch((error) => {
         this.setState({ error });
@@ -120,9 +120,9 @@ class SignUpFormBase extends Component {
 
     const isInvalid =
       passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email === '' ||
-      username === '' ||
+      passwordOne === "" ||
+      email === "" ||
+      username === "" ||
       String(phone).length > 10 ||
       (isAdmin && isMaintainer && isSawyer) ||
       (!isAdmin && !isMaintainer && !isSawyer) ||
@@ -268,7 +268,11 @@ class SignUpFormBase extends Component {
           </div>
         </div>
         <div className='text-sm-right col-md-3'>
-          <button disabled={isInvalid} type='submit'>
+          <button
+            disabled={isInvalid}
+            type='submit'
+            className='btn btn-primary'
+          >
             Sign Up
           </button>
         </div>

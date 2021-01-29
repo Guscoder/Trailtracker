@@ -6,7 +6,6 @@ import TrailInputForm from "./forms/TrailInputForm";
 import VolunteerInputForm from "./forms/VolunteerInputForm";
 import TableList from "./TableList";
 import TableComplete from "./TableComplete";
-import NewItemPreview from "./NewItemPreview";
 
 import HomePage from "./HomePage";
 import Login from "./Login";
@@ -29,6 +28,7 @@ function App(props) {
             <Route exact path='/' component={Home} />
             <Route path='/login' component={Login} />
             <Route exact path='/homepage' component={HomePage} />
+            <Route exact path='/trailinputform' component={TrailInputForm} />
 
             {isAuthenticated &&
             (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
@@ -55,16 +55,6 @@ function App(props) {
             {isAuthenticated &&
             (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
               <Route path='/trailinputform' exact component={TrailInputForm} />
-            ) : (
-              <Redirect to='/login' />
-            )}
-            {isAuthenticated &&
-            (currentUserRole === "ADMIN" || currentUserRole === "SAWYER") ? (
-              <Route
-                path='/newitempreview'
-                exact
-                render={(props) => <NewItemPreview {...props} />}
-              />
             ) : (
               <Redirect to='/login' />
             )}
